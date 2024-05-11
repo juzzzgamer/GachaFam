@@ -1,0 +1,78 @@
+/* Existing styles for category1 section */
+.SPECIAL {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .SPECIAL h2 {
+    text-align: center;
+  }
+  
+  .SPECIAL .box-container {
+    display: flex;
+    justify-content: center;
+    
+  }
+  
+  /* Existing styles for best-deals section */
+  .best-deals {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+  }
+  
+  .best-deals h2 {
+    text-align: center;
+  }
+  
+  .best-deals .box-container {
+    display: flex;
+    justify-content: center;
+  }
+  
+  /* New styles for random section */
+  .random {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+  }
+  
+  .random h2 {
+    text-align: center;
+  }
+  
+  .random .box-container {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .box {
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 300px;
+    transition: box-shadow 0.3s ease; /* Adding transition effect */
+  }
+  
+  .box:hover {
+    box-shadow: 0 0 10px cyan; /* Adding shadow on hover */
+  }
+  
+  .box img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+  
+  .box h3 {
+    margin: 10px;
+    font-size: 1.2em;
+  }
+  
+  .box p {
+    margin: 0 10px 10px;
+  }
+ 
