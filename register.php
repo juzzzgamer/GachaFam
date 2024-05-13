@@ -6,15 +6,15 @@ if(isset($_POST['registerbtn'])){
     $password=$_POST['password'];
     $password=md5($password);
 
-        $checkEmail="SELECT * From user where email = '$email' ";
-        $result=$conn->query($checkEmail);
-        if($result->num_rows>0){
-            echo "Email Address already exists!";
+        $checkEmail="SELECT * From user where email = '$email'";
+        $result=mysqli_query($conn, $checkEmail);
+        if(mysqli_num_rows($result) == 1){
+            echo "<script>alert('Email address exists!'); window.location.href = 'login.php';</script>";
         }
         else {
             $insertQuery="INSERT INTO user(email, username, password)
                         VALUES ('$email', '$username', '$password')";
-                if($conn->query($insertQuery)==TRUE){
+                if(mysqli_query($insertQuery)==TRUE){
                     header("location: login.php");
                 }
                 else{
@@ -25,19 +25,23 @@ if(isset($_POST['registerbtn'])){
 if(isset($_POST['loginbtn'])){
     $username=$_POST['username'];
     $password=$_POST['password'];
-    $password=md5($password);
+    $passwordhash=md5($password);
 
-    $sql="SELECT * From user where username='$username' and password='$password'";
-    $result=$conn->query($sql);
-    if($result->num_rows>0){
-        session_start();
+    $sql="SELECT * From user where username='$username' and password='$passwordhash'";
+    $result=mysqli_query($conn, $sql);
+    if(mysqli_num_rows($result) == 1){
+        $remember=$_POST['remember'];
         $row=$result->fetch_assoc();
+        session_start();
         $_SESSION['username']=$row['username'];
+        if(isset($remember)){
+            setcookie('uname', $username, time()+60*60);
+            setcookie('pass', $password, time()+60*60);
+        }
         header("location: index.php");
-        exit();
     }
     else{
-        echo "Invalid username or password";
+        echo "<script>alert('Invalid username or password'); window.location.href = 'login.php';</script>";
     }
 }
 ?>

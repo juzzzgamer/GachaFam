@@ -1,4 +1,6 @@
 <?php
+session_start();
+session_destroy();
 include ("connect.php");
 ?>
 <!DOCTYPE html>
@@ -138,15 +140,15 @@ include ("connect.php");
         <form action="register.php" method="POST">
             <h1>Welcome to GachaFam!</h1>
                 <div class="inputbox">
-                <input type="text" name="username" placeholder="Username" required>
+                <input type="text" name="username" placeholder="Username" required value=<?php if (isset($_COOKIE['uname'])) echo $_COOKIE['uname'];?>>
                     <i class='bx bx-user' ></i>
                 </div>
                 <div class="inputbox">
-                <input type="password" name="password" placeholder="Password" required>
+                <input type="password" name="password" placeholder="Password" required value=<?php if (isset($_COOKIE['pass'])) echo $_COOKIE['pass']?>>
                     <i class='bx bx-lock-alt'></i>
                 </div>
                 <div class="rmbforgot">
-                <label><input type="checkbox">Remember me</label>
+                <label><input type="checkbox" name="remember">Remember me</label>
                     <a href="#">Forgot password?</a>
                  </div>
                  <input class ="btn" name="loginbtn" type="submit" value="Login">
