@@ -38,7 +38,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             try {
                
-                $query = "INSERT INTO users (Name_of_product, descc, img, price) VALUES (?, ?, ?, ?)";
+                $query = "INSERT INTO listings (product_name, listing_desc, img, price) 
+                                VALUES (?, ?, ?, ?)";
                 $stmt = $pdo->prepare($query);
                 $stmt->execute([$Name, $desc, $new_img_name, $price]);
 
