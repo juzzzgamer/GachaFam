@@ -35,7 +35,7 @@ try {
         <div class="box-container">
             <?php foreach ($products as $product): ?>
             <div class="box">
-                <img src="uploads/<?php echo htmlspecialchars($product['img']); ?>" alt="<?php echo htmlspecialchars($product['Name_of_product']); ?>">
+                <img src="upload/<?php echo htmlspecialchars($product['img']); ?>" alt="<?php echo htmlspecialchars($product['Name_of_product']); ?>">
                 <h3><?php echo htmlspecialchars($product['Name_of_product']); ?></h3>
                 <p><?php echo htmlspecialchars($product['price']); ?></p>
                 <p><?php echo htmlspecialchars($product['descc']); ?></p>
@@ -49,7 +49,7 @@ try {
         <div class="box-container">
             <?php foreach ($products as $product): ?>
             <div class="box">
-                <img src="uploads/<?php echo htmlspecialchars($product['img']); ?>" alt="<?php echo htmlspecialchars($product['Name_of_product']); ?>">
+                <img src="upload/<?php echo htmlspecialchars($product['img']); ?>" alt="<?php echo htmlspecialchars($product['Name_of_product']); ?>">
                 <h3><?php echo htmlspecialchars($product['Name_of_product']); ?></h3>
                 <p><?php echo htmlspecialchars($product['price']); ?></p>
                 <p><?php echo htmlspecialchars($product['descc']); ?></p>
@@ -63,7 +63,7 @@ try {
         <div class="box-container">
             <?php foreach ($products as $product): ?>
             <div class="box">
-                <img src="uploads/<?php echo htmlspecialchars($product['img']); ?>" alt="<?php echo htmlspecialchars($product['Name_of_product']); ?>">
+                <img src="upload/<?php echo htmlspecialchars($product['img']); ?>" alt="<?php echo htmlspecialchars($product['Name_of_product']); ?>">
                 <h3><?php echo htmlspecialchars($product['Name_of_product']); ?></h3>
                 <p><?php echo htmlspecialchars($product['price']); ?></p>
                 <p><?php echo htmlspecialchars($product['descc']); ?></p>
