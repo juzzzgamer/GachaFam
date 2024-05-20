@@ -14,7 +14,7 @@ if(isset($_POST['registerbtn'])){
         else {
             $insertQuery="INSERT INTO user(email, username, password)
                         VALUES ('$email', '$username', '$password')";
-                if(mysqli_query($insertQuery)==TRUE){
+                if(mysqli_query($conn, $insertQuery)==TRUE){
                     header("location: login.php");
                 }
                 else{

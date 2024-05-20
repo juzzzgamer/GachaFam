@@ -16,9 +16,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $img_error = $_FILES["img"]["error"];
 
           
-            if ($img_size < 120) {
-                echo "<script>alert('Sorry, your file is too large.');</script>";
-                header("Location: create.php");
+            if ($img_size > 125000) {
+                echo "<script>alert('Sorry, your file is too large.');window.location.href = 'create.php';</script>";
                 exit();
             }
 
@@ -28,8 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $allowed_exs = array("jpg", "jpeg", "png");
 
             if (!in_array($img_ex_lc, $allowed_exs)) {
-                echo "<script>alert('You can't upload files of this type');</script>";
-                header("Location: create.php");
+                echo "<script>alert('You can't upload files of this type'); window.location.href = 'create.php';</script>";
                 exit();
             }
 
