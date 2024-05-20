@@ -1,6 +1,10 @@
+<?php
+include ("session.php");
+?>
 <!DOCTYPE html>
 <head>
     <title>upload</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="create.css">
     
 </head>
@@ -9,7 +13,8 @@
         <h1 class="logo">Gacha<span>Fam.</span></a></h1>
 
         <ul>
-          <li><a href="create.php">Create listing</a></li>
+            <li><a href="#" id="profile">Welcome, <span style="color:red"><?php echo ("$username")?></span></a></li>
+            <li><a href="create.php">Create listing</a></li>
             <li><a href="file:///C:/Users/Yen%20Ming%20Jun/OneDrive/Desktop/mini%20it%20project.html/cases.html">Cases</a></li>
             <li><a href="file:///C:/Users/Yen%20Ming%20Jun/OneDrive/Desktop/mini%20it%20project.html/cart.html">Cart</a></li>
             <li><a href="#">Profile</a></li>
