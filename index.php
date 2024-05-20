@@ -1,13 +1,5 @@
 <?php
 include ("session.php");
-$username = $_SESSION['username'];
-if (isset($_COOKIE['session'])){
-  $expiration_time = $_COOKIE['session'];
-  if (time() > $expiration_time) {
-    header("location: login.php");
-    exit;
-  }
-}
 ?>
 
 <!DOCTYPE html>
@@ -22,7 +14,8 @@ if (isset($_COOKIE['session'])){
         <h1 class="logo">Gacha<span>Fam.</span></a></h1>
 
         <ul>
-            <li><a href="#" id="profile">Welcome, <?php echo ("$username")?></a></li>
+            <li><a href="#" id="profile">Welcome, <span style="color:red"><?php echo ("$username")?></span></a></li>
+            <li><a href="create.php">Create listing</a></li>
             <li><a href="file:///C:/Users/Yen%20Ming%20Jun/OneDrive/Desktop/mini%20it%20project.html/cases.html">Cases</a></li>
             <li><a href="file:///C:/Users/Yen%20Ming%20Jun/OneDrive/Desktop/mini%20it%20project.html/cart.html">Cart</a></li>
             <li><a href="logout.php">Logout</a></li>
