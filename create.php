@@ -2,6 +2,7 @@
 <head>
     <title>upload</title>
     <link rel="stylesheet" href="create.css">
+    <link rel="stylesheet" href="style.css">
     
 </head>
 <body>
