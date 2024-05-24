@@ -1,35 +1,31 @@
 <?php
-include ("connect.php");
-#$game_id = 1; // Assuming a specific game ID for this example
+function getItems($pdo) {
+    $stmt = $pdo->prepare("SELECT id, name, rarity FROM items");
+    $stmt->execute();
+    $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt->closeCursor();
 
-$sql = "SELECT id, name, rarity FROM items";
-$stmt = mysqli_prepare($conn, $sql);
-#$stmt->bind_param("i", $game_id);
-$stmt->execute();
-$result = $stmt->get_result();
-$items = $result->fetch_all(MYSQLI_ASSOC);
-$stmt->close();
+    $rarity_probabilities = [
+        'epic' => 0.04,
+        'rare' => 0.16,
+        'common' => 0.8
+    ];
 
-// Define rarity probabilities
-$rarity_probabilities = [
-    'uncommon' => 0.1,
-    'medium' => 0.3,
-    'common' => 0.6
-];
+    $rarity_counts = [
+        'epic' => 0,
+        'rare' => 0,
+        'common' => 0
+    ];
 
-$total_probability = 0;
-foreach ($items as &$item) {
-    $rarity = $item['rarity'];
-    $item['probability'] = $rarity_probabilities[$rarity];
-    $total_probability += $rarity_probabilities[$rarity];
+    // count item rarity
+    foreach ($items as $item) {
+        $rarity = $item['rarity'];
+        $rarity_counts[$rarity]++;
+    }
+    // calculate item probability
+    foreach ($items as &$item) {
+        $item['probability'] = $rarity_probabilities[$item['rarity']] / $rarity_counts[$item['rarity']];
+    }
+    return $items;
 }
-
-// Adjust individual item probabilities to ensure they sum up to 1
-foreach ($items as &$item) {
-    $item['probability'] /= $total_probability;
-}
-
-$conn->close();
-
-
 ?>

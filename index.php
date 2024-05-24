@@ -1,8 +1,8 @@
 <?php
 include("dbh.inc.php");
-
+include("session.php");
 try {
-    $stmt = $pdo->prepare("SELECT Name_of_product, descc, img, price FROM users");
+    $stmt = $pdo->prepare("SELECT product_name, listing_desc, img, price FROM listings");
     $stmt->execute();
     $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
@@ -23,6 +23,7 @@ try {
     <div class="menu_bar">
         <h1 class="logo">Gacha<span>Fam.</span></h1>
         <ul>
+        <li><a href="#" id="profile">Welcome, <span style="color:red"><?php echo ("$username")?></span></a></li>
             <li><a href="create.php">Create listing</a></li>
             <li><a href="cases.html">Cases</a></li>
             <li><a href="cart.html">Cart</a></li>
@@ -35,10 +36,10 @@ try {
         <div class="box-container">
             <?php foreach ($products as $product): ?>
             <div class="box">
-                <img src="upload/<?php echo htmlspecialchars($product['img']); ?>" alt="<?php echo htmlspecialchars($product['Name_of_product']); ?>">
-                <h3><?php echo htmlspecialchars($product['Name_of_product']); ?></h3>
+                <img src="upload/<?php echo htmlspecialchars($product['img']); ?>" alt="<?php echo htmlspecialchars($product['product_name']); ?>">
+                <h3><?php echo htmlspecialchars($product['product_name']); ?></h3>
                 <p><?php echo htmlspecialchars($product['price']); ?></p>
-                <p><?php echo htmlspecialchars($product['descc']); ?></p>
+                <p><?php echo htmlspecialchars($product['listing_desc']); ?></p>
             </div>
             <?php endforeach; ?>
         </div>
@@ -49,10 +50,10 @@ try {
         <div class="box-container">
             <?php foreach ($products as $product): ?>
             <div class="box">
-                <img src="upload/<?php echo htmlspecialchars($product['img']); ?>" alt="<?php echo htmlspecialchars($product['Name_of_product']); ?>">
-                <h3><?php echo htmlspecialchars($product['Name_of_product']); ?></h3>
+                <img src="upload/<?php echo htmlspecialchars($product['img']); ?>" alt="<?php echo htmlspecialchars($product['product_name']); ?>">
+                <h3><?php echo htmlspecialchars($product['product_name']); ?></h3>
                 <p><?php echo htmlspecialchars($product['price']); ?></p>
-                <p><?php echo htmlspecialchars($product['descc']); ?></p>
+                <p><?php echo htmlspecialchars($product['listing_desc']); ?></p>
             </div>
             <?php endforeach; ?>
         </div>
@@ -63,10 +64,10 @@ try {
         <div class="box-container">
             <?php foreach ($products as $product): ?>
             <div class="box">
-                <img src="upload/<?php echo htmlspecialchars($product['img']); ?>" alt="<?php echo htmlspecialchars($product['Name_of_product']); ?>">
-                <h3><?php echo htmlspecialchars($product['Name_of_product']); ?></h3>
+                <img src="upload/<?php echo htmlspecialchars($product['img']); ?>" alt="<?php echo htmlspecialchars($product['product_name']); ?>">
+                <h3><?php echo htmlspecialchars($product['product_name']); ?></h3>
                 <p><?php echo htmlspecialchars($product['price']); ?></p>
-                <p><?php echo htmlspecialchars($product['descc']); ?></p>
+                <p><?php echo htmlspecialchars($product['listing_desc']); ?></p>
             </div>
             <?php endforeach; ?>
         </div>

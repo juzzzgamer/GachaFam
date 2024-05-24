@@ -1,6 +1,8 @@
 <?php
 include ("session.php");
 include ("calc_probability.php");
+include ("dbh.inc.php");
+$items = getItems($pdo);
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +32,10 @@ include ("calc_probability.php");
             <h2>Items</h2>
             <ul>
                 <?php foreach ($items as $item): ?>
-                    <li><?php echo $item['name']; ?> (<?php echo $item['rarity']; ?>) Probability - <?php echo $item['probability']; ?></li>
+                    <li>
+                        <?php echo $item['name']; ?> 
+                    (<?php echo $item['rarity']; ?>) 
+                    Probability - <?php echo $item['probability']; ?></li>
                 <?php endforeach; ?>
             </ul>
         </div>
