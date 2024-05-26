@@ -62,7 +62,7 @@
     background-color: red;
 }
 .btn-increment:hover{
-    background-color: green;
+    background-color:green;
 }
 .btn-input{
     width: 50px;
@@ -109,16 +109,18 @@
     color: white;
     text-align: center;
 }
+
 .product_img{
     display:flex;
     width: 580px;
     height: 180px;
-    overflow: hidden;
-    overflow-x:scroll;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 
 }
 ::-webkit-scrollbar{
-    width: 0;
+    display: none;
 }
 .product_img img{
     width: 200px;
