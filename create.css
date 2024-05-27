@@ -50,26 +50,23 @@ input {
     z-index: 1111;
 }
 
-.input-label {
-    position: absolute;
-    top: -25px;
-    left: 10px;
-    font-size: 0.8em;
-    color: white;
-    background-color: grey;
-    padding: 5px 10px;
-    transition: 0.2s ease;
-}
-
 input:focus,
 input:valid {
     color: lightgreen;
     border: 2px solid lightgreen;
 }
 
-input:focus + .input-label,
-input:valid + .input-label {
-    color: lightgreen;
-    background-color: transparent;
-    transform: translate(0,-50%) scale(0.9);
+button {
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: darken(var(--color-primary), 10%);
 }
