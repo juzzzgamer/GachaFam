@@ -43,6 +43,7 @@ if (isset($_POST['loginbtn'])) {
     if ($loginStmt->rowCount() == 1) {
         $row = $loginStmt->fetch(PDO::FETCH_ASSOC);
         session_start();
+        $_SESSION['user_id'] = $row['id'];
         $_SESSION['username'] = $row['username'];
 
         if (isset($_POST['remember'])) {
