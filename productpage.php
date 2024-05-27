@@ -1,3 +1,15 @@
+<?php
+include("dbh.inc.php");
+include("session.php");
+try {
+    $stmt = $pdo->prepare("SELECT product_name, listing_desc, img, price FROM listings");
+    $stmt->execute();
+    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die("Query failed: " . $e->getMessage());
+}
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,9 +21,11 @@
     <div class="menu_bar">
         <h1 class="logo">Gacha<span>Fam.</span></a></h1>
         <ul>
-            <li><a href="file:///C:/Users/Yen%20Ming%20Jun/OneDrive/Desktop/mini%20it%20project.html/cases.html">Cases</a></li>
-            <li><a href="file:///C:/Users/Yen%20Ming%20Jun/OneDrive/Desktop/mini%20it%20project.html/cart.html">Cart</a></li>
-            <li><a href="file:///C:/Users/Yen%20Ming%20Jun/OneDrive/Desktop/New%20folder/WebApp/login.html">Account</a></li>
+        <li><a href="#" id="profile">Welcome, <span style="color:red"><?php echo ("$username")?></span></a></li>
+            <li><a href="create.php">Create listing</a></li>
+            <li><a href="cases.html">Cases</a></li>
+            <li><a href="cart.html">Cart</a></li>
+            <li><a href="logout.php">Logout</a></li>
         </ul>
     </div>
     <div class="container">
@@ -40,17 +54,19 @@
                     </div>
                 </div>
             </div>
-            <div class="product_img">
-                <img src="https://egamersworld.com/uploads/blog/16655771848831.jpg" alt="Product_img">
-                <img src="https://egamersworld.com/uploads/blog/16655771848831.jpg" alt="Product_img">
-                <img src="https://egamersworld.com/uploads/blog/16655771848831.jpg" alt="Product_img">
-                <img src="https://egamersworld.com/uploads/blog/16655771848831.jpg" alt="Product_img">
-                <img src="https://egamersworld.com/uploads/blog/16655771848831.jpg" alt="Product_img">
-                <img src="https://egamersworld.com/uploads/blog/16655771848831.jpg" alt="Product_img">
-                <img src="https://egamersworld.com/uploads/blog/16655771848831.jpg" alt="Product_img">
-                <img src="https://egamersworld.com/uploads/blog/16655771848831.jpg" alt="Product_img">
-                <img src="https://egamersworld.com/uploads/blog/16655771848831.jpg" alt="Product_img">
-                <img src="https://egamersworld.com/uploads/blog/16655771848831.jpg" alt="Product_img">
+            <div class="product_img-container">
+                <div class="product_img">
+                    <img src="https://egamersworld.com/uploads/blog/16655771848831.jpg" alt="Product_img">
+                    <img src="https://egamersworld.com/uploads/blog/16655771848831.jpg" alt="Product_img">
+                    <img src="https://egamersworld.com/uploads/blog/16655771848831.jpg" alt="Product_img">
+                    <img src="https://egamersworld.com/uploads/blog/16655771848831.jpg" alt="Product_img">
+                    <img src="https://egamersworld.com/uploads/blog/16655771848831.jpg" alt="Product_img">
+                    <img src="https://egamersworld.com/uploads/blog/16655771848831.jpg" alt="Product_img">
+                    <img src="https://egamersworld.com/uploads/blog/16655771848831.jpg" alt="Product_img">
+                    <img src="https://egamersworld.com/uploads/blog/16655771848831.jpg" alt="Product_img">
+                    <img src="https://egamersworld.com/uploads/blog/16655771848831.jpg" alt="Product_img">
+                    <img src="https://egamersworld.com/uploads/blog/16655771848831.jpg" alt="Product_img">
+                </div>
             </div>
         </div>
     </div>
