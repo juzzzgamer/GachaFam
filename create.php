@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<?php include("session.php"); 
+<?php 
+include("session.php"); 
 include ("dbh.inc.php");
-include "stock_update.php";
 try {
     $stmt = $pdo->prepare("SELECT id, user_id, name, img, stock FROM items WHERE user_id = :user_id");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
@@ -20,7 +20,18 @@ try {
     <link rel="stylesheet" href="create.css">
     <script>
         function showItemForm(){
+            document.getElementById('itemFields').style.display = 'block';
+            document.getElementById('initialFields').style.display = 'none';
+            document.getElementById('stockDisplay').style.display = 'none';
+        }
+        function showGameForm(){
             document.getElementById('itemFields').style.display = 'none';
+            document.getElementById('initialFields').style.display = 'block';
+            document.getElementById('stockDisplay').style.display = 'none';
+        }
+        function showStockForm(){
+            document.getElementById('itemFields').style.display = 'none';
+            document.getElementById('initialFields').style.display = 'none';
             document.getElementById('stockDisplay').style.display = 'block';
         }
     </script>
@@ -38,16 +49,43 @@ try {
     </div>      
     <div class="container">
         <form id="createForm" action="formhandler.inc.php" method="post" enctype="multipart/form-data">
-            <div id="itemFields">
+            <div id="initialFields">
+                <h1>Create Listing</h1>
+                <div class="entryarea">
+                    <input type="text" name="Name" placeholder="Name of product" required>
+                </div>
+                <div class="entryarea">
+                    <input type="file" name="img" accept=".jpg,.jpeg,.png" placeholder="Image" required>
+                </div>
+                <div class="entryarea">
+                    <input type="text" name="desc" placeholder="Description" required>
+                </div>
+                <div class="entryarea">
+                    <input type="number" name="price" placeholder="Price" required>
+                </div>
+                <button type="submit" name="createGame">Submit</button>
+                <div class="updatestock">
+                    <p>Willing to upload items? <a href="#" onclick="showItemForm()">Items</a></p>
+                </div>
+                <div class="updatestock">
+                    <p>Willing to update stock? <a href="#" onclick="showStockForm()">Update stock</a></p>
+                </div>
+            </div>
+        </form>
+        <form id="createForm" action="formhandler.inc.php" method="post" enctype="multipart/form-data">
+            <div id="itemFields" style="display:none;">
                 <h2>Items</h2>
                 <div class="entryarea">
                     <input type="text" name="itemsName[]" placeholder="Item" required>
                     <input type="file" name="itemsImg[]" accept=".jpg,.jpeg,.png" required>
                 </div>
-                <div class="updatestock">
-                    <p>Willing to update stock? <a href="#" onclick="showItemForm()">Stock</a></p>
-                </div>
                 <button type="submit" name="itemsUpload">Submit</button>
+                <div class="updatestock">
+                    <p>Willing to create game? <a href="#" onclick="showGameForm()">Create game</a></p>
+                </div>
+                <div class="updatestock">
+                    <p>Willing to update stock? <a href="#" onclick="showStockForm()">Update stock</a></p>
+                </div>
             </div>
         </form>
         <form id="createForm" action="formhandler.inc.php" method="post" enctype="multipart/form-data">
@@ -75,6 +113,12 @@ try {
                 </div>
                 <br><br>
                 <button type="submit" name="stockUpdate">Submit</button>
+                <div class="updatestock">
+                    <p>Willing to create game? <a href="#" onclick="showGameForm()">Create game</a></p>
+                </div>
+                <div class="updatestock">
+                    <p>Willing to upload items? <a href="#" onclick="showItemForm()">Items</a></p>
+                </div>
             </div>
             </form>
     </div>

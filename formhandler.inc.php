@@ -55,7 +55,28 @@ function handleMultipleFileUploads($files, $pathPrefix = 'upload/') {
 
     return $uploadedFiles;
 }
-
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['createGame'])){
+    if (isset($_POST["Name"], $_POST['desc'], $_POST['price'], $_FILES['img'], $user_id)){
+        $name = $_POST["Name"];
+        $desc = $_POST["desc"];
+        $price = $_POST["price"];
+        $main_img_name = handleFileUpload($_FILES["img"]);
+        try{
+            $pdo->beginTransaction();
+                $query = "INSERT INTO game (user_id, game_name, game_desc, img, price) VALUES (?, ?, ?, ?, ?)";
+                $stmt = $pdo->prepare($query);
+                $stmt->execute([$user_id, $name, $desc, $main_img_name, $price]);
+                $pdo->commit(); 
+                header("Location: create.php");
+            exit();
+        }   catch (Exception $e) {
+            // Rollback transaction on exception
+            $pdo->rollBack();
+            echo "<script>alert('" . $e->getMessage() . "'); window.location.href = 'create.php';</script>";
+            exit();
+        } 
+    }
+}
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['itemsUpload'])) {
     // Check for required fields
     if (isset($_POST['itemsName'], $_FILES['itemsImg'], $user_id)) {
@@ -95,7 +116,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['itemsUpload'])) {
         $quantity = $_POST['quantity'];
         updateStock($pdo, $itemID, $quantity);
     }
-}else {
+}
+else {
     // Redirect if not a POST request
     header("Location: create.php");
     exit();
