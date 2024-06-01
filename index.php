@@ -2,9 +2,9 @@
 include("dbh.inc.php");
 include("session.php");
 try {
-    $stmt = $pdo->prepare("SELECT game_name, game_desc, img, price FROM game");
+    $stmt = $pdo->prepare("SELECT id, game_name, game_desc, img, price FROM game");
     $stmt->execute();
-    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     die("Query failed: " . $e->getMessage());
 }
@@ -34,40 +34,13 @@ try {
     <section class="SPECIAL">
         <h2>SPECIAL</h2>
         <div class="box-container">
-            <?php foreach ($products as $product): ?>
+            <?php foreach ($games as $game): ?>
+            <a href="gacha.php?id=<?php echo urlencode($game['id']); ?>" class="box-link" style="text-decoration: none;">
             <div class="box">
-                <img src="upload/<?php echo htmlspecialchars($product['img']); ?>" alt="<?php echo htmlspecialchars($product['game_name']); ?>">
-                <h3><?php echo htmlspecialchars($product['game_name']); ?></h3>
-                <p><?php echo htmlspecialchars($product['price']); ?></p>
-                <p><?php echo htmlspecialchars($product['game_desc']); ?></p>
-            </div>
-            <?php endforeach; ?>
-        </div>
-    </section>
-    
-    <section class="best-deals">
-        <h2>BEST DEALS</h2>
-        <div class="box-container">
-            <?php foreach ($products as $product): ?>
-            <div class="box">
-                <img src="upload/<?php echo htmlspecialchars($product['img']); ?>" alt="<?php echo htmlspecialchars($product['game_name']); ?>">
-                <h3><?php echo htmlspecialchars($product['game_name']); ?></h3>
-                <p><?php echo htmlspecialchars($product['price']); ?></p>
-                <p><?php echo htmlspecialchars($product['game_desc']); ?></p>
-            </div>
-            <?php endforeach; ?>
-        </div>
-    </section>
-    
-    <section class="random">
-        <h2>RANDOM</h2>
-        <div class="box-container">
-            <?php foreach ($products as $product): ?>
-            <div class="box">
-                <img src="upload/<?php echo htmlspecialchars($product['img']); ?>" alt="<?php echo htmlspecialchars($product['game_name']); ?>">
-                <h3><?php echo htmlspecialchars($product['game_name']); ?></h3>
-                <p><?php echo htmlspecialchars($product['price']); ?></p>
-                <p><?php echo htmlspecialchars($product['game_desc']); ?></p>
+                <img src="upload/<?php echo htmlspecialchars($game['img']); ?>" alt="<?php echo htmlspecialchars($game['game_name']); ?>">
+                <h3><?php echo htmlspecialchars($game['game_name']); ?></h3>
+                <p><?php echo htmlspecialchars($game['price']); ?>$</p>
+                <p><?php echo htmlspecialchars($game['game_desc']); ?></p>
             </div>
             <?php endforeach; ?>
         </div>

@@ -2,7 +2,7 @@
 include("dbh.inc.php");
 include("session.php");
 try {
-    $stmt = $pdo->prepare("SELECT game_name, listing_desc, img, price FROM listings");
+    $stmt = $pdo->prepare("SELECT game_name, game_desc, img, price FROM game");
     $stmt->execute();
     $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
@@ -70,6 +70,6 @@ try {
             </div>
         </div>
     </div>
-    <script src="productpage.js"></script>
+    <script src="gacha.js"></script>
 </body>
 </html>
