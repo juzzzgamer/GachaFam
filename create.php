@@ -23,16 +23,25 @@ try {
             document.getElementById('itemFields').style.display = 'block';
             document.getElementById('initialFields').style.display = 'none';
             document.getElementById('stockDisplay').style.display = 'none';
+            document.getElementById('itemSelect').style.display = 'none';
         }
         function showGameForm(){
             document.getElementById('itemFields').style.display = 'none';
             document.getElementById('initialFields').style.display = 'block';
             document.getElementById('stockDisplay').style.display = 'none';
+            document.getElementById('itemSelect').style.display = 'none';
         }
         function showStockForm(){
             document.getElementById('itemFields').style.display = 'none';
             document.getElementById('initialFields').style.display = 'none';
             document.getElementById('stockDisplay').style.display = 'block';
+            document.getElementById('itemSelect').style.display = 'none';
+        }
+        function showGameItemForm(){
+            document.getElementById('itemFields').style.display = 'none';
+            document.getElementById('initialFields').style.display = 'none';
+            document.getElementById('stockDisplay').style.display = 'none';
+            document.getElementById('itemSelect').style.display = 'block';
         }
     </script>
 </head>
@@ -63,7 +72,7 @@ try {
                 <div class="entryarea">
                     <input type="number" name="price" placeholder="Price" required>
                 </div>
-                <button type="submit" name="createGame">Submit</button>
+                <button type="button" onclick="showGameItemForm()">Submit</button>
                 <div class="updatestock">
                     <p>Willing to upload items? <a href="#" onclick="showItemForm()">Items</a></p>
                 </div>
@@ -71,6 +80,29 @@ try {
                     <p>Willing to update stock? <a href="#" onclick="showStockForm()">Update stock</a></p>
                 </div>
             </div>
+            <div class="item" id="itemSelect" style="display:none;">
+                <input type="hidden" id="game_id" name="game_id">
+            <h1>Select items:</h1>
+            <?php foreach ($items as $item): ?>
+                <?php if($item['stock'] != 0): ?>
+                    <img src="<?php echo htmlspecialchars($item['img']); ?>" alt="Item image">
+                    <h2><?php echo htmlspecialchars($item['name']); ?></h2>
+                    <p>ID: <?php echo htmlspecialchars($item['id']); ?></p>
+                    <input type="checkbox" name="selectedItem[]" value="<?php echo htmlspecialchars($item['id']); ?>">
+                    <input type="text" name="probabilities[<?php echo htmlspecialchars($item['id']); ?>]">
+                <?php endif; ?>
+            <?php endforeach; ?>
+            <input type="submit" name="createGame" value="Select">
+            <h1>Out of stock items:</h1>
+            <p>Willing to update stock? <a href="#" onclick="showStockForm()">Update stock</a></p>
+            <?php foreach ($items as $item): ?>
+                <?php if($item['stock'] == 0): ?>
+                    <img src="<?php echo htmlspecialchars($item['img']); ?>" alt="Item image">
+                    <h2><?php echo htmlspecialchars($item['name']); ?></h2>
+                    <p>ID: <?php echo htmlspecialchars($item['id']); ?></p>
+            <?php endif; ?>
+            <?php endforeach; ?>
+        </div>
         </form>
         <form id="createForm" action="formhandler.inc.php" method="post" enctype="multipart/form-data">
             <div id="itemFields" style="display:none;">
