@@ -2,7 +2,13 @@
 include("dbh.inc.php");
 include("session.php");
 try {
-    $stmt = $pdo->prepare("SELECT game_name, game_desc, img, price FROM game");
+    $stmt = $pdo->prepare("SELECT game.game_name AS game_name,
+     game.id AS game_id, game.img AS game_img,
+     items.name AS item_name, 
+     items.id AS item_id, items.img AS item_img 
+     FROM game_items 
+     LEFT JOIN game ON game_items.game_id = game.id 
+     LEFT JOIN items ON game_items.item_id = items.id;");
     $stmt->execute();
     $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
