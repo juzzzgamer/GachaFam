@@ -50,7 +50,7 @@ try {
     <div class="container">
         <form id="createForm" action="formhandler.inc.php" method="post" enctype="multipart/form-data">
             <div id="initialFields">
-                <h1>Create Listing</h1>
+                <h1>Create Game</h1>
                 <div class="entryarea">
                     <input type="text" name="Name" placeholder="Name of product" required>
                 </div>
@@ -90,6 +90,7 @@ try {
         </form>
         <form id="createForm" action="formhandler.inc.php" method="post" enctype="multipart/form-data">
             <div id="stockDisplay" style="display:none;">
+            <h1>Available Items</h1>
                 <?php foreach ($items as $item): ?>
                     <h3><?php echo htmlspecialchars($item['name']); ?></h3>
                     <img src="upload/<?php echo htmlspecialchars($item['img']); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>">
@@ -97,7 +98,7 @@ try {
                 <?php endforeach; ?>
                 <h1>Stock Update</h1>
                 <div class="entryarea">
-                    <label for="item_id_update">Select a product:</label>
+                    <label for="item_id_update">Select an item:</label>
                     <select id="item_id_update" name="id">
                     <?php 
                     foreach ($items as $item) {
