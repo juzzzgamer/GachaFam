@@ -10,7 +10,7 @@ try {
     die("Query failed: " . $e->getMessage());
 }
 try {
-    $itemstmt = $pdo->prepare("SELECT id, user_id, name, img FROM items WHERE user_id = :user_id");
+    $itemstmt = $pdo->prepare("SELECT id, user_id, name, img, stock FROM items WHERE user_id = :user_id");
     $itemstmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $itemstmt->execute();
     $items = $itemstmt->fetchAll(PDO::FETCH_ASSOC);
@@ -62,14 +62,25 @@ try {
         <div class="item" id="itemSelect" style="display:none;">
         <input type="hidden" id="game_id" name="game_id">
         <h1>Select items:</h1>
-            <?php foreach ($items as $item): ?>
-                    <img src="<?php echo htmlspecialchars($item['img']); ?>" alt="Item image">
-                    <h2><?php echo htmlspecialchars($item['name']); ?></h2>
-                    <p>ID: <?php echo htmlspecialchars($item['id']); ?></p>
-                    <input type="checkbox" name="selectedItem[]" value="<?php echo htmlspecialchars($item['id']); ?>">
-                    <input type="text" name="probabilities[<?php echo htmlspecialchars($item['id']); ?>]">
-            <?php endforeach; ?>
-            <input type="submit" value="Select">
+        <?php foreach ($items as $item): ?>
+            <?php if($item['stock'] != 0): ?>
+                <img src="<?php echo htmlspecialchars($item['img']); ?>" alt="Item image">
+                <h2><?php echo htmlspecialchars($item['name']); ?></h2>
+                <p>ID: <?php echo htmlspecialchars($item['id']); ?></p>
+                <input type="checkbox" name="selectedItem[]" value="<?php echo htmlspecialchars($item['id']); ?>">
+                <input type="text" name="probabilities[<?php echo htmlspecialchars($item['id']); ?>]">
+            <?php endif; ?>
+        <?php endforeach; ?>
+        <input type="submit" value="Select">
+        <h1>Out of stock items:</h1>
+        <p>Willing to update stock? <a href="create.php">Update stock</a></p>
+        <?php foreach ($items as $item): ?>
+            <?php if($item['stock'] == 0): ?>
+                <img src="<?php echo htmlspecialchars($item['img']); ?>" alt="Item image">
+                <h2><?php echo htmlspecialchars($item['name']); ?></h2>
+                <p>ID: <?php echo htmlspecialchars($item['id']); ?></p>
+        <?php endif; ?>
+        <?php endforeach; ?>
         </div>
         </form>
         <div>
