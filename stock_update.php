@@ -22,6 +22,4 @@ function updateStock($pdo, $itemID, $quantity) {
         echo "Connection failed: " . $e->getMessage();
     }
 }
-
-// Usage example
 ?>
