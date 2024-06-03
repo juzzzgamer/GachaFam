@@ -18,21 +18,31 @@ try {
     <title>Upload</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="create.css">
+
     <script>
         function showItemForm(){
             document.getElementById('itemFields').style.display = 'block';
             document.getElementById('initialFields').style.display = 'none';
             document.getElementById('stockDisplay').style.display = 'none';
+            document.getElementById('itemSelect').style.display = 'none';
         }
         function showGameForm(){
             document.getElementById('itemFields').style.display = 'none';
             document.getElementById('initialFields').style.display = 'block';
             document.getElementById('stockDisplay').style.display = 'none';
+            document.getElementById('itemSelect').style.display = 'none';
         }
         function showStockForm(){
             document.getElementById('itemFields').style.display = 'none';
             document.getElementById('initialFields').style.display = 'none';
             document.getElementById('stockDisplay').style.display = 'block';
+            document.getElementById('itemSelect').style.display = 'none';
+        }
+        function showGameItemForm(){
+            document.getElementById('itemFields').style.display = 'none';
+            document.getElementById('initialFields').style.display = 'none';
+            document.getElementById('stockDisplay').style.display = 'none';
+            document.getElementById('itemSelect').style.display = 'block';
         }
     </script>
 </head>
