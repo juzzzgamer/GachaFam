@@ -56,18 +56,43 @@ function handleMultipleFileUploads($files, $pathPrefix = 'upload/') {
     return $uploadedFiles;
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['createGame'])){
-    if (isset($_POST["Name"], $_POST['desc'], $_POST['price'], $_FILES['img'], $user_id)){
+    if (isset($_POST["Name"], $_POST['desc'], $_POST['price'], $_FILES['img'], $user_id, $_POST['selectedItem'], $_POST['probabilities']) && !empty($_POST['selectedItem']) && !empty($_POST['probabilities'])){
         $name = $_POST["Name"];
         $desc = $_POST["desc"];
         $price = $_POST["price"];
-        $main_img_name = handleFileUpload($_FILES["img"]);
+        $main_img_name = handleFileUpload($_FILES["img"]);  
+
+        $selectedItem = $_POST['selectedItem']; // This will be an array of item IDs
+        $probabilities = $_POST['probabilities'];
+
+        $cummulativeProbability = 0;
         try{
             $pdo->beginTransaction();
                 $query = "INSERT INTO game (user_id, game_name, game_desc, img, price) VALUES (?, ?, ?, ?, ?)";
                 $stmt = $pdo->prepare($query);
                 $stmt->execute([$user_id, $name, $desc, $main_img_name, $price]);
-                $pdo->commit(); 
-                header("Location: create.php");
+                $last_game_id = $pdo->lastInsertId();  
+
+                foreach ($selectedItem as $item_id) {
+                    $probability = isset($probabilities[$item_id]) ? $probabilities[$item_id] : 0;
+                    if (!is_numeric($probability)) {
+                        echo "<script>alert('Invalid probability value for item ID: $item_id'); window.location.href = 'create.php';</script>";
+                        exit;
+                    }
+                    $cummulativeProbability += $probability;
+                    if ($cummulativeProbability > 1){
+                        echo "<script>alert('Total probability can only be in range 0 - 1'); window.location.href = 'create.php';</script>";
+                        exit;
+                    }else{
+                        $stmt = $pdo->prepare("INSERT INTO game_items (game_id, item_id, probability) VALUES (:game_id, :item_id, :probability)");
+                        $stmt->bindParam(':game_id', $last_game_id, PDO::PARAM_INT);
+                        $stmt->bindParam(':item_id', $item_id, PDO::PARAM_INT);
+                        $stmt->bindParam(':probability', $probability, PDO::PARAM_STR);
+                        $stmt->execute();
+                    }
+                }
+            $pdo->commit();
+            echo "<script>alert('Game created. Items successfully added to the game.'); window.location.href = 'create.php';</script>";
             exit();
         }   catch (Exception $e) {
             // Rollback transaction on exception
