@@ -17,7 +17,7 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="create.css">
+
     <script>
         function showItemForm(){
             document.getElementById('itemFields').style.display = 'block';
@@ -85,7 +85,7 @@ try {
             <h1>Select items:</h1>
             <?php foreach ($items as $item): ?>
                 <?php if($item['stock'] != 0): ?>
-                    <img src="<?php echo htmlspecialchars($item['img']); ?>" alt="Item image">
+                    <img src="upload/<?php echo htmlspecialchars($item['img']); ?>" alt="Item image">
                     <h2><?php echo htmlspecialchars($item['name']); ?></h2>
                     <p>ID: <?php echo htmlspecialchars($item['id']); ?></p>
                     <input type="checkbox" name="selectedItem[]" value="<?php echo htmlspecialchars($item['id']); ?>">
@@ -97,7 +97,7 @@ try {
             <p>Willing to update stock? <a href="#" onclick="showStockForm()">Update stock</a></p>
             <?php foreach ($items as $item): ?>
                 <?php if($item['stock'] == 0): ?>
-                    <img src="<?php echo htmlspecialchars($item['img']); ?>" alt="Item image">
+                    <img src="upload/<?php echo htmlspecialchars($item['img']); ?>" alt="Item image">
                     <h2><?php echo htmlspecialchars($item['name']); ?></h2>
                     <p>ID: <?php echo htmlspecialchars($item['id']); ?></p>
             <?php endif; ?>
