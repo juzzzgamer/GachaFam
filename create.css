@@ -1,59 +1,95 @@
-.container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: calc(100vh - 80px);
+:root {
+    --color-primary: #156bff;
+    --color-white: #fff;
+    --color-black: #000;
+    --color-input-border: #ccc;
+    --color-input-focus: lightgreen;
+    --color-input-text: lightgreen;
+    --color-background: #5f5f5f;
 }
 
-.container h1 {
-    margin-bottom: 20px;
-    color: white;
+body {
+    margin: 0;
+    padding: 0;
+    background: url("background.jpg") no-repeat center center fixed;
+    background-size: cover;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.page-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px); /* Blur effect */
+    -webkit-backdrop-filter: blur(10px); /* For Safari */
+    border: 2px solid var(--color-white);
+}
+
+h1, h2 {
+    margin: 20px 0;
+    color: var(--color-white);
+    text-align: center;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .createBoard {
     width: 100%;
     max-width: 800px;
-    height: 100%;
-    max-height: 600px;
     padding: 20px;
     border-radius: 10px;
-    border: 2px solid #ccc;
-    background-color: #f9f9f9;
+    border: 2px solid var(--color-input-border);
+    background-color: var(--color-white);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px); /* Blur effect */
+    -webkit-backdrop-filter: blur(10px); /* For Safari */
 }
 
 .entryarea {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 30px;
-    position: relative;
-}
-
-.entryarea:first-child {
-    margin-top: 20px;
+    justify-content: center;
+    margin-bottom: 20px;
+    width: 100%;
+    color: var(--color-white);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 input {
     width: 80%;
+    max-width: 400px;
     outline: none;
     font-size: 1em;
     padding: 10px;
     border-radius: 10px;
-    border: 2px solid black;
+    border: 2px solid var(--color-input-border);
     background: transparent;
-    transition: 0.1s ease;
-    z-index: 1111;
+    transition: border 0.1s ease, color 0.1s ease;
+    margin-bottom: 15px;
+    color: var(--color-white);
 }
 
 input:focus,
 input:valid {
-    color: lightgreen;
-    border: 2px solid lightgreen;
+    color: var(--color-input-text);
+    border: 2px solid var(--color-input-focus);
 }
 
 button {
@@ -64,9 +100,64 @@ button {
     background-color: var(--color-primary);
     color: var(--color-white);
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    margin: 20px auto;
+    display: block;
+    width: fit-content;
+    transition: 400ms;
 }
 
 button:hover {
-    background-color: darken(var(--color-primary), 10%);
+    background-color: var(--color-primary);
+    color: black;
+}
+
+.additional-options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+
+}
+
+.additional-options p {
+    margin: 5px 0;
+    text-align: center;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: var(--color-white);
+}
+
+.additional-options a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.additional-options a:hover {
+    color: darken(var(--color-primary), 10%);
+}
+
+.item-detail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.item-detail img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    border: 2px solid var(--color-input-border);
+    margin-bottom: 10px;
+}
+
+.item-detail h3 {
+    margin: 10px 0;
+    color: var(--color-white);
+}
+
+.item-detail p {
+    margin: 5px 0;
+    color: var(--color-white);
 }
