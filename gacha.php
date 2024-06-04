@@ -65,15 +65,15 @@ if($game_id_from_url !== null){
                 <p class="product-name"><?php echo htmlspecialchars($game_name); ?></p>
                 <p class="price">Price: <span class="priceValue"><?php echo htmlspecialchars($game_price); ?></span>$</p>
                 <div class="btn">
+                <form action="calc_probability.php" method="post">
                     <button class="btn1 btn-decrement">-</button>
-                    <input type="text" id="quantity" class="btn-input" value="1">
+                    <input type="text" id="quantity" class="btn-input" name="quantity" value="1">
                     <button class="btn1 btn-increment">+</button>
-                    <form action="calc_probability.php" method="post">
                     <input type="hidden" name="game_id" value="<?php echo htmlspecialchars($game_id); ?>">
                     <div class="purchase">
                         <button id="purchase" name="roll">buy</button>
                     </div>
-                    </form>
+                </form>
                     <div class="total-amount">
                         <h1>total-amount</h1>
                         <p class="total-price" id="tPrice">
@@ -94,53 +94,6 @@ if($game_id_from_url !== null){
             </div>
         </div>
     </div>
-<script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-    const productImgContainer = document.querySelector('.product_img');
-
-    productImgContainer.addEventListener('wheel', (e) => {
-        e.preventDefault();
-        productImgContainer.scrollLeft += e.deltaY;
-    });
-
-    const incrementButton = document.querySelector('.btn-increment');
-    const decrementButton = document.querySelector('.btn-decrement');
-    const quantityInput = document.getElementById('quantity');
-    const priceValueElement = document.querySelector('.priceValue');
-    let totalPriceElement = document.getElementById('totalPrice');
-
-    const priceValue = parseFloat(priceValueElement.textContent);
-    let quantity = parseInt(quantityInput.value);
-
-    function updateTotalPrice() {
-        if(totalPriceElement){
-        const totalPrice = quantity * priceValue;
-        totalPriceElement.textContent = totalPrice.toFixed(2); // Update total price
-        }
-    }
-
-    incrementButton.addEventListener('click', () => {
-        quantity++;
-        quantityInput.value = quantity;
-        updateTotalPrice();
-    });
-
-    decrementButton.addEventListener('click', () => {
-        if (quantity > 1) {
-            quantity--;
-            quantityInput.value = quantity;
-            updateTotalPrice();
-        }
-     });
-     quantityInput.addEventListener('input', () => {
-        quantity = parseInt(quantityInput.value);
-        if (isNaN(quantity) || quantity < 1) {
-            quantity = 1;
-            quantityInput.value = quantity;
-        }
-        updateTotalPrice();
-    });
-});
-</script>
+<script src="gacha.js"></script>
 </body>
 </html>

@@ -139,7 +139,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['itemsUpload'])) {
     if ($_POST['quantity']) {
         $itemID = $_POST['id'];
         $quantity = $_POST['quantity'];
-        updateStock($pdo, $itemID, $quantity);
+        increaseStock($pdo, $itemID, $quantity);
     }
 }
 else {
