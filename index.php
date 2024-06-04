@@ -21,7 +21,7 @@ try {
 </head>
 <body>
     <div class="menu_bar">
-        <h1 class="logo">Gacha<span>Fam.</span></h1>
+        <a href="index.php" class="logo"><h3>Gacha<span>Fam.</span></h3></a>
         <ul>
         <li><a href="#" id="profile">Welcome, <span style="color:red"><?php echo ("$username")?></span></a></li>
             <li><a href="create.php">Create listing</a></li>
