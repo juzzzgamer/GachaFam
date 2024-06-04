@@ -18,8 +18,10 @@ body {
 }
 
 .logo {
+    text-decoration: none;
     color: var(--color-white);
     font-size: 30px;
+    text-decoration: none;
 }
 
 .logo span {
@@ -76,7 +78,7 @@ body {
 .box img {
     max-width: 100%;
     height: auto;
-    aspect-ratio: 1/1; /* Ensures the image is square */
+    aspect-ratio: 1/1; 
     object-fit: cover;
     border-radius: 10px;
 }
