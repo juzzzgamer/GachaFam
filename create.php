@@ -18,11 +18,7 @@ try {
     <title>Upload</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="create.css">
-<<<<<<< HEAD
     
-=======
-
->>>>>>> origin/mike
     <script>
         function showItemForm(){
             document.getElementById('itemFields').style.display = 'block';
@@ -60,21 +56,12 @@ try {
             <li><a href="cart.html">Cart</a></li>
             <li><a href="logout.php">Logout</a></li>
         </ul>
-<<<<<<< HEAD
     </div>    
     <div class="page-container">  
         <div class="container">
             <form id="createForm" action="formhandler.inc.php" method="post" enctype="multipart/form-data">
                 <div id="initialFields">
                     <h1>Create Game</h1>
-=======
-    </div>
-    <div class="page-container">
-        <div class="container">
-            <form id="createForm" action="formhandler.inc.php" method="post" enctype="multipart/form-data">
-                <div id="initialFields">
-                    <h1>Create Listing</h1>
->>>>>>> origin/mike
                     <div class="entryarea">
                         <input type="text" name="Name" placeholder="Name of product" required>
                     </div>
@@ -87,17 +74,12 @@ try {
                     <div class="entryarea">
                         <input type="number" name="price" placeholder="Price" required>
                     </div>
-<<<<<<< HEAD
                     <button type="button" onclick="showGameItemForm()">Submit</button>
-=======
-                    <button type="submit" name="createGame">Submit</button>
->>>>>>> origin/mike
                     <div class="additional-options">
                         <p>Willing to upload items? <a href="#" onclick="showItemForm()">Items</a></p>
                         <p>Willing to update stock? <a href="#" onclick="showStockForm()">Update stock</a></p>
                     </div>
                 </div>
-<<<<<<< HEAD
                 <div class="item" id="itemSelect" style="display:none;">
                     <input type="hidden" id="game_id" name="game_id">
                     <h1>Select items:</h1>
@@ -112,7 +94,7 @@ try {
                                     <input type="checkbox" id="item_<?php echo htmlspecialchars($item['id']); ?>" name="selectedItem[]" value="<?php echo htmlspecialchars($item['id']); ?>">
                                     <label for="item_<?php echo htmlspecialchars($item['id']); ?>"></label>
                                 </div>
-                                <input type="text" placeholder="Probabilities" required name="probabilities[<?php echo htmlspecialchars($item['id']); ?>]">
+                                <input type="text" placeholder="Probabilities" name="probabilities[<?php echo htmlspecialchars($item['id']); ?>]">
                             </div>
                         <?php endif; ?>
                     <?php endforeach; ?>
@@ -135,8 +117,6 @@ try {
                     <?php endforeach; ?>
                 </div>
             </div>
-=======
->>>>>>> origin/mike
             </form>
             <form id="createForm" action="formhandler.inc.php" method="post" enctype="multipart/form-data">
                 <div id="itemFields" style="display:none;">
@@ -157,21 +137,12 @@ try {
                     <h1>Stock Update</h1>
                     <div class="entryarea">
                         <label for="item_id_update">Select a product:</label>
-<<<<<<< HEAD
                         <select id="item_id_update" name="id" >
                             <?php 
                             foreach ($items as $item) {
                                 echo "<option value=\"{$item['id']}\">{$item['name']}</option>";
                             }
                             ?>
-=======
-                        <select id="item_id_update" name="id">
-                        <?php 
-                        foreach ($items as $item) {
-                            echo "<option value=\"{$item['id']}\">{$item['name']}</option>";
-                        }
-                        ?>
->>>>>>> origin/mike
                         </select>
                     </div>
                     <br><br>
@@ -190,20 +161,12 @@ try {
                         <div class="item-detail">
                             <h3><?php echo htmlspecialchars($item['name']); ?></h3>
                             <img src="upload/<?php echo htmlspecialchars($item['img']); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>">
-<<<<<<< HEAD
                             <p>Stock: <?php echo htmlspecialchars($item['stock']); ?></p>
-=======
-                            <p><?php echo htmlspecialchars($item['stock']); ?></p>
->>>>>>> origin/mike
                         </div>
                         <?php endforeach; ?>
                     </div>
                 </div>
-<<<<<<< HEAD
             </form>
-=======
-                </form>
->>>>>>> origin/mike
         </div>
     </div>
 </body>
