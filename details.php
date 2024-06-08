@@ -10,7 +10,6 @@ if($username_id_from_url !== null){
     if($results){
         foreach ($results as $row){
             if ($row['username'] == $username_id_from_url) {
-           // $selected_rows[] = $row;  // Store the matching row in the array
             $username = $row['username'];
             $email = $row['email'];
         }
@@ -31,7 +30,6 @@ if($username_id_from_url !== null){
 <body>
     <h1>Details</h1>
     <div>
-        <!-- Your details content goes here -->
         <p>Username: <?php echo $username; ?></p>
         <p>Email: <?php echo $email; ?></p>
     </div>
