@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     function updateTotalPrice() {
         if(totalPriceElement){
         const totalPrice = quantity * priceValue;
-        totalPriceElement.textContent = totalPrice; // Update total price
+        totalPriceElement.textContent = totalPrice;
         }
     }
 

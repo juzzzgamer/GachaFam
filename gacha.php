@@ -1,7 +1,7 @@
-    <?php
+<?php
 include("dbh.inc.php");
 include("session.php");
-
+$quantity = isset($_POST['quantity']) ? $_POST['quantity'] : 1;
 $game_id_from_url = isset($_GET['id']) ? $_GET['id'] : null;
 if($game_id_from_url !== null){
     try {
@@ -15,11 +15,10 @@ if($game_id_from_url !== null){
      LEFT JOIN user ON game.user_id = user.id;");
     $stmt->execute();
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $games = [];
+    $stock_sum = 0;
     if($results){
         foreach ($results as $row){
             if ($row['game_id'] == $game_id_from_url) {
-            $selected_rows[] = $row;  // Store the matching row in the array
             $game_id = $row['game_id'];
             $game_name = $row['game_name'];
             $game_price = $row['game_price'];
@@ -29,10 +28,16 @@ if($game_id_from_url !== null){
             $item_name = $row['item_name'];
             $item_img[] = $row['item_img'];
             $probabilities[] = $row['probability'];
+            $stock_sum += $row['item_stock'];
             }
         }
     }else {
-        echo "No results found.";
+        echo "No results found.<script>window.location.href='index.php';</script>";
+    }
+    if($quantity > $stock_sum && $stock_sum != 0){
+        // Return error message
+        echo "<script>alert('Error: Quantity of roll cannot be greater than sum of stock.'); window.history.back();</script>";
+        return;
     }
     }catch (PDOException $e) {
         die("Query failed: " . $e->getMessage());
@@ -40,16 +45,8 @@ if($game_id_from_url !== null){
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
     include "calc_probability.php";
-    //$game_id_from_post = isset($_POST['id']) ? $_POST['id'] : null;
-    $quantity = isset($_POST['quantity']) ? $_POST['quantity'] : 1;
-
     $rolledItem = handleGachaRoll($pdo, $game_id_from_url, $quantity);
-
-    // Display the result
     $_SESSION['rolledItem'] = $rolledItem;
-    //echo json_encode($_SESSION['rolledItem']);
-
-    // Redirect to the same page to prevent form resubmission
     header("Location: gacha.php?id=" . urlencode($game_id_from_url));
     exit;
 }
@@ -58,15 +55,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
 <!DOCTYPE html>
 <html>
 <head>
-<title>box</title>
-<link rel="stylesheet" href="product_page.css">
-<link rel="stylesheet" href="style.css">
+    <title>box</title>
+    <link rel="stylesheet" href="product_page.css">
+    <link rel="stylesheet" href="style.css">
 </head>
-<body> 
-    <?php 
-    foreach ($_SESSION['rolledItem'] as $test){
-        echo htmlspecialchars($test['item_name']);
-    }?>
+<body>
     <div class="menu_bar">
         <a href="index.php" class="logo"><h3>Gacha<span>Fam.</span></h3></a>
         <ul>

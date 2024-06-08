@@ -3,7 +3,6 @@ require_once "dbh.inc.php";
 include "session.php";
 include "stock_update.php";
 function handleFileUpload($file, $pathPrefix = 'upload/') {
-    // File upload handling code
     $img_name = $file["name"];
     $img_size = $file["size"];
     $tmp_name = $file["tmp_name"];
@@ -48,7 +47,6 @@ function handleMultipleFileUploads($files, $pathPrefix = 'upload/') {
             $uploadedFileName = handleFileUpload($file, $pathPrefix);
             $uploadedFiles[] = $uploadedFileName;
         } catch (Exception $e) {
-            // Handle errors for individual files
             echo "Error uploading file {$name}: " . $e->getMessage() . "<br>";
         }
     }
@@ -62,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['createGame'])){
         $price = $_POST["price"];
         $main_img_name = handleFileUpload($_FILES["img"]);  
 
-        $selectedItem = $_POST['selectedItem']; // This will be an array of item IDs
+        $selectedItem = $_POST['selectedItem'];
         $probabilities = $_POST['probabilities'];
 
         $cummulativeProbability = 0;
@@ -95,7 +93,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['createGame'])){
             echo "<script>alert('Game created. Items successfully added to the game.'); window.location.href = 'create.php';</script>";
             exit();
         }   catch (Exception $e) {
-            // Rollback transaction on exception
             $pdo->rollBack();
             echo "<script>alert('" . $e->getMessage() . "'); window.location.href = 'create.php';</script>";
             exit();
@@ -103,13 +100,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['createGame'])){
     }
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['itemsUpload'])) {
-    // Check for required fields
     if (isset($_POST['itemsName'], $_FILES['itemsImg'], $user_id)) {
         $itemsName = $_POST['itemsName'];
         $itemsImg = $_FILES['itemsImg'];
 
         try {
-            // Start transaction
             $pdo->beginTransaction();
 
             $item_img = handleMultipleFileUploads($_FILES["itemsImg"]);
@@ -121,18 +116,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['itemsUpload'])) {
                     $stmt->execute([$user_id, $item_name, $item_img_name, '0']);
                 }
             }
-            // Commit transaction
             $pdo->commit();
             header("Location: create.php");
             exit();
         } catch (Exception $e) {
-            // Rollback transaction on exception
             $pdo->rollBack();
             echo "<script>alert('" . $e->getMessage() . "'); window.location.href = 'create.php';</script>";
             exit();
         }
     } else {
-        // Handle case where required fields are not set
         echo "One or more required fields are not set.";
     }
 }elseif($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['stockUpdate'])) {
@@ -143,7 +135,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['itemsUpload'])) {
     }
 }
 else {
-    // Redirect if not a POST request
     header("Location: create.php");
     exit();
 }
