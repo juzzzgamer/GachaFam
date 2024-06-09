@@ -8,29 +8,25 @@ if (!isset($_SESSION['username'])) {
 }
 
 $username = $_SESSION['username'];
-$userCredits = 0; 
+$user_id = $_SESSION['user_id'];
+$userCredits = $_SESSION['user_credits'];
 
 try {
- 
-    $stmt = $pdo->prepare("SELECT id, credits FROM user WHERE username = ?");
-    $stmt->execute([$username]);
+    $stmt = $pdo->prepare("SELECT id, credits FROM user WHERE id = ?");
+    $stmt->execute([$user_id]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($user) {
-        $user_id = $user['id'];
         $userCredits = $user['credits'];
 
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $amount = (int)$_POST['amount'];
 
-          
             $stmt = $pdo->prepare("UPDATE user SET credits = credits + ? WHERE id = ?");
             if ($stmt->execute([$amount, $user_id])) {
+                // Update user credits in session
+                $_SESSION['user_credits'] += $amount;
                 echo "Credits added successfully!";
-                
-                $stmt = $pdo->prepare("SELECT credits FROM user WHERE id = ?");
-                $stmt->execute([$user_id]);
-                $userCredits = $stmt->fetchColumn();
             } else {
                 echo "Error updating record.";
             }
@@ -48,9 +44,8 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>gacha</title>
+    <title>Add Credits</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="listing.css">
 </head>
 <body>
     <div class="menu_bar">
@@ -67,7 +62,8 @@ try {
     </div>
 
     <form method="post">
-        Amount: <input type="number" name="amount" required><br>
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" name="amount" required>
         <input type="submit" value="Add Credits">
     </form>
     <a href="index.php">Back to Dashboard</a>
