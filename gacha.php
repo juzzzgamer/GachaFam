@@ -34,6 +34,12 @@ if ($game_id_from_url !== null) {
             $item_img = $selected_rows[0]['item_img'];
             $probabilities = $selected_rows[0]['probability'];
             $seller_id = $selected_rows[0]['user_id'];
+
+            // Prevent buying own game items
+            if ($seller_id == $_SESSION['user_id']) {
+                echo "<script>alert('You cannot purchase your own game items!'); window.location.href = 'index.php';</script>";
+                exit;
+            }
         }
     } catch (PDOException $e) {
         die("Query failed: " . $e->getMessage());
