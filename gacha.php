@@ -1,6 +1,7 @@
 <?php
 include("dbh.inc.php");
 include("session.php");
+include("lastPrize.php");
 $quantity = isset($_POST['quantity']) ? $_POST['quantity'] : 1;
 $game_id_from_url = isset($_GET['id']) ? $_GET['id'] : null;
 if($game_id_from_url !== null){
@@ -34,11 +35,6 @@ if($game_id_from_url !== null){
     }else {
         echo "No results found.<script>window.location.href='index.php';</script>";
     }
-    if($quantity > $stock_sum && $stock_sum != 0){
-        // Return error message
-        echo "<script>alert('Error: Quantity of roll cannot be greater than sum of stock.'); window.history.back();</script>";
-        return;
-    }
     }catch (PDOException $e) {
         die("Query failed: " . $e->getMessage());
     }
@@ -47,7 +43,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
     include "calc_probability.php";
     $rolledItem = handleGachaRoll($pdo, $game_id_from_url, $quantity);
     $_SESSION['rolledItem'] = $rolledItem;
+    foreach ($_SESSION['rolledItem'] as $prize){
+        foreach ($prize as $item){
+            $lastPrizeID = handlePrize($pdo, $user_id, $item['item_id']);
+        }
+    }
+    if($quantity > $stock_sum && $stock_sum != 0){
+        $_SESSION['error'] = 'Error: Quantity of roll cannot be greater than sum of stock.';
+    }
+    if($stock_sum == 0){
+        $_SESSION['error'] = 'Error: No stock available.';
+    }
     header("Location: gacha.php?id=" . urlencode($game_id_from_url));
+    $_SESSION['lastPrizeID'] = $lastPrizeID;
     exit;
 }
 ?>
@@ -58,8 +66,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
     <title>box</title>
     <link rel="stylesheet" href="product_page.css">
     <link rel="stylesheet" href="style.css">
+    <style>.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}</style>
 </head>
 <body>
+    <p>Congrats <?php echo $lastPrizeWinner;?> had won <?php echo $lastPrizeItemID;?>
     <div class="menu_bar">
         <a href="index.php" class="logo"><h3>Gacha<span>Fam.</span></h3></a>
         <ul>
@@ -109,6 +152,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
             </div>
         </div>
     </div>
+    <?php if (isset($_SESSION['error'])): ?>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p><?php echo addslashes($_SESSION['error']); ?></p>
+        </div>
+    </div>
+    <script>
+        var modal = document.getElementById("myModal");
+        var span = document.getElementsByClassName("close")[0];
+        modal.style.display = "block";
+        span.onclick = function() {
+            modal.style.display = "none";
+            window.location.href='index.php';
+        }
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+                window.location.href='index.php';
+            }
+        }
+    </script>
+    <?php unset($_SESSION['error']); ?>
+<?php endif; ?>
 <script src="gacha.js"></script>
 </body>
 </html>

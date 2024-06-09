@@ -1,6 +1,7 @@
 <?php
 include "dbh.inc.php";
 include "stock_update.php";
+include "session.php";
 function getRandomItem($items) {
     global $pdo;
     $totalProbability = 0;
@@ -42,7 +43,22 @@ function getMultipleItem($items, $quantity) {
     }
     return $result;
 }
-
+function handlePrize($pdo, $user_id, $item_id){
+    $pdo->beginTransaction();
+    try {
+        $stmt = $pdo->prepare("INSERT INTO user_items (user_id, item_id) VALUES (:user_id, :item_id)");
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->bindParam(':item_id', $item_id, PDO::PARAM_INT);
+        $stmt->execute();
+        $lastPrizeID = $pdo->lastInsertId(); 
+        
+        $pdo->commit();
+        return $lastPrizeID;
+    } catch (PDOException $e) {
+        $pdo->rollBack();
+        return ['error' => 'Query failed: ' . $e->getMessage()];
+    }
+}
 function handleGachaRoll($pdo, $game_id, $quantity) {
     $rolledItem = null;
     if ($game_id !== null) {
