@@ -56,12 +56,14 @@ include "stock_update.php";
                                         // Deduct the stock of the rolled item
                                         deductStock($pdo, $prize['item_id'], 1);
                                     }
+                                  
                                     break;
                                 }
                             }
                         }
                     }
                     return $rolledItem;
+                  
                 } else {
                     return ['error' => 'No items found for this game.'];
                 }
