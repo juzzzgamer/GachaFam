@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
 }</style>
 </head>
 <body>
-    <p>Congrats <?php echo $lastPrizeWinner;?> had won <?php echo $lastPrizeItemID;?>
+    
     <div class="menu_bar">
         <a href="index.php" class="logo"><h3>Gacha<span>Fam.</span></h3></a>
         <ul>
@@ -113,6 +113,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
             <li><a href="logout.php">Logout</a></li>
         </ul>
     </div>
+    <div class="scrolling_container">
+        <div class="group">
+            <marquee behavior="" direction="right">Congrats <?php echo $lastPrizeWinner;?> had won <?php echo $lastPrizeItemID;?></marquee>
+        </div>
+    </div> 
     <div class="container">
         <div class="col-1">
             <img src="upload/<?php echo htmlspecialchars($game_img); ?>" alt="box" srcset="">
@@ -173,9 +178,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
                 window.location.href='index.php';
             }
         }
+
+
     </script>
     <?php unset($_SESSION['error']); ?>
-<?php endif; ?>
+    <?php endif; ?>
 <script src="gacha.js"></script>
 </body>
 </html>
