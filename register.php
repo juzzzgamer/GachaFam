@@ -6,7 +6,7 @@ if (isset($_POST['registerbtn'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
     $password = md5($password);
-
+  
     $checkEmailStmt = $pdo->prepare("SELECT * FROM user WHERE email = :email");
     $checkEmailStmt->bindParam(':email', $email);
     $checkEmailStmt->execute();
@@ -31,7 +31,7 @@ if (isset($_POST['loginbtn'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
     $passwordhash = md5($password);
-
+  
     $loginStmt = $pdo->prepare("SELECT * FROM user WHERE username = :username AND password = :password");
     $loginStmt->bindParam(':username', $username);
     $loginStmt->bindParam(':password', $passwordhash);
@@ -42,6 +42,7 @@ if (isset($_POST['loginbtn'])) {
         session_start();
         $_SESSION['user_id'] = $row['id'];
         $_SESSION['username'] = $row['username'];
+        $_SESSION['user_credits'] = $row['credits'];
 
         if (isset($_POST['remember'])) {
             setcookie('uname', $username, time() + 60 * 60 * 24);
