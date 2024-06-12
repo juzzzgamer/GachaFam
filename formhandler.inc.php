@@ -2,9 +2,7 @@
 require_once "dbh.inc.php"; 
 include "session.php";
 include "stock_update.php";
-
 function handleFileUpload($file, $pathPrefix = 'upload/') {
-    // File upload handling code
     $img_name = $file["name"];
     $img_size = $file["size"];
     $tmp_name = $file["tmp_name"];
@@ -49,14 +47,12 @@ function handleMultipleFileUploads($files, $pathPrefix = 'upload/') {
             $uploadedFileName = handleFileUpload($file, $pathPrefix);
             $uploadedFiles[] = $uploadedFileName;
         } catch (Exception $e) {
-            // Handle errors for individual files
             echo "Error uploading file {$name}: " . $e->getMessage() . "<br>";
         }
     }
 
     return $uploadedFiles;
 }
-
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['createGame'])){
     if (isset($_POST["Name"], $_POST['desc'], $_POST['price'], $_FILES['img'], $user_id, $_POST['selectedItem'], $_POST['probabilities']) && !empty($_POST['selectedItem']) && !empty($_POST['probabilities'])){
         $name = $_POST["Name"];
@@ -64,65 +60,51 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['createGame'])){
         $price = $_POST["price"];
         $main_img_name = handleFileUpload($_FILES["img"]);  
 
-        $selectedItem = $_POST['selectedItem']; // This will be an array of item IDs
+        $selectedItem = $_POST['selectedItem'];
         $probabilities = $_POST['probabilities'];
 
         $cummulativeProbability = 0;
-        try {
+        try{
             $pdo->beginTransaction();
-            $query = "INSERT INTO game (user_id, game_name, game_desc, img, price) VALUES (?, ?, ?, ?, ?)";
-            $stmt = $pdo->prepare($query);
-            $stmt->execute([$user_id, $name, $desc, $main_img_name, $price]);
-            $last_game_id = $pdo->lastInsertId();  
+                $query = "INSERT INTO game (user_id, game_name, game_desc, img, price) VALUES (?, ?, ?, ?, ?)";
+                $stmt = $pdo->prepare($query);
+                $stmt->execute([$user_id, $name, $desc, $main_img_name, $price]);
+                $last_game_id = $pdo->lastInsertId();  
 
-            foreach ($selectedItem as $item_id) {
-                $probability = isset($probabilities[$item_id]) ? $probabilities[$item_id] : 0;
-                if (!is_numeric($probability)) {
-                    echo "<script>alert('Invalid probability value for item ID: $item_id'); window.location.href = 'create.php';</script>";
-                    exit;
+                foreach ($selectedItem as $item_id) {
+                    $probability = isset($probabilities[$item_id]) ? $probabilities[$item_id] : 0;
+                    if (!is_numeric($probability)) {
+                        echo "<script>alert('Invalid probability value for item ID: $item_id'); window.location.href = 'create.php';</script>";
+                        exit;
+                    }
+                    $cummulativeProbability += $probability;
+                    if ($cummulativeProbability > 1){
+                        echo "<script>alert('Total probability can only be in range 0 - 1'); window.location.href = 'create.php';</script>";
+                        exit;
+                    }else{
+                        $stmt = $pdo->prepare("INSERT INTO game_items (game_id, item_id, probability) VALUES (:game_id, :item_id, :probability)");
+                        $stmt->bindParam(':game_id', $last_game_id, PDO::PARAM_INT);
+                        $stmt->bindParam(':item_id', $item_id, PDO::PARAM_INT);
+                        $stmt->bindParam(':probability', $probability, PDO::PARAM_STR);
+                        $stmt->execute();
+                    }
                 }
-                $cummulative
-                                $cummulativeProbability += $probability;
-                if ($cummulativeProbability > 1) {
-                    echo "<script>
-                            alert('Total probability can only be in range 0 - 1');
-                            window.location.href = 'create.php';
-                          </script>";
-                    exit;
-                } else {
-                    $stmt = $pdo->prepare("INSERT INTO game_items (game_id, item_id, probability) VALUES (:game_id, :item_id, :probability)");
-                    $stmt->bindParam(':game_id', $last_game_id, PDO::PARAM_INT);
-                    $stmt->bindParam(':item_id', $item_id, PDO::PARAM_INT);
-                    $stmt->bindParam(':probability', $probability, PDO::PARAM_STR);
-                    $stmt->execute();
-                }
-            }
             $pdo->commit();
-            echo "<script>
-                    alert('Game created. Items successfully added to the game.');
-                    window.location.href = 'create.php';
-                  </script>";
+            echo "<script>alert('Game created. Items successfully added to the game.'); window.location.href = 'create.php';</script>";
             exit();
-        } catch (Exception $e) {
-           
+        }   catch (Exception $e) {
             $pdo->rollBack();
-            echo "<script>
-                    alert('" . $e->getMessage() . "');
-                    window.location.href = 'create.php';
-                  </script>";
+            echo "<script>alert('" . $e->getMessage() . "'); window.location.href = 'create.php';</script>";
             exit();
         } 
     }
 }
-
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['itemsUpload'])) {
-  
     if (isset($_POST['itemsName'], $_FILES['itemsImg'], $user_id)) {
         $itemsName = $_POST['itemsName'];
         $itemsImg = $_FILES['itemsImg'];
 
         try {
-           
             $pdo->beginTransaction();
 
             $item_img = handleMultipleFileUploads($_FILES["itemsImg"]);
@@ -134,43 +116,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['itemsUpload'])) {
                     $stmt->execute([$user_id, $item_name, $item_img_name, '0']);
                 }
             }
-      
             $pdo->commit();
-            echo "<script>
-                    alert('Items successfully uploaded.');
-                    window.location.href = 'create.php';
-                  </script>";
+            header("Location: create.php");
             exit();
         } catch (Exception $e) {
-           
             $pdo->rollBack();
-            echo "<script>
-                    alert('" . $e->getMessage() . "');
-                    window.location.href = 'create.php';
-                  </script>";
+            echo "<script>alert('" . $e->getMessage() . "'); window.location.href = 'create.php';</script>";
             exit();
         }
     } else {
-      
-        echo "<script>
-                alert('One or more required fields are not set.');
-                window.location.href = 'create.php';
-              </script>";
+        echo "One or more required fields are not set.";
     }
-} elseif ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['stockUpdate'])) {
+}elseif($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['stockUpdate'])) {
     if ($_POST['quantity']) {
         $itemID = $_POST['id'];
         $quantity = $_POST['quantity'];
         increaseStock($pdo, $itemID, $quantity);
-        echo "<script>
-                alert('Stock updated successfully.');
-                window.location.href = 'create.php';
-              </script>";
     }
-} else {
-   
+}
+else {
     header("Location: create.php");
     exit();
 }
 ?>
-

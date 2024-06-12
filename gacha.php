@@ -42,10 +42,6 @@ if($game_id_from_url !== null){
     }
 }
 
- if ($seller_id == $_SESSION['user_id']) {
-                echo "<script>alert('You cannot purchase your own game items!'); window.location.href = 'index.php';</script>";
-                exit;
-            }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
     include "calc_probability.php";
@@ -53,6 +49,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
     $totalPrice = $game_price * $quantity;
 
     if ($userCredits >= $totalPrice) {
+        if($quantity > $stock_sum && $stock_sum != 0){
+            $_SESSION['error'] = 'Error: Quantity of roll cannot be greater than sum of stock.';
+            exit;
+        }
+        
         $rolledItem = handleGachaRoll($pdo, $game_id_from_url, $quantity);
 
       
@@ -63,10 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
         $stmt = $pdo->prepare("UPDATE user SET credits = credits + ? WHERE id = ?");
         $stmt->execute([$totalPrice, $seller_id]);
 
-       
         $_SESSION['rolledItem'] = $rolledItem;
-
-     
         $_SESSION['user_credits'] -= $totalPrice;
 
         header("Location: gacha.php?id=" . urlencode($game_id_from_url));
@@ -75,7 +73,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
         echo "<script>alert('Insufficient credits!');</script>";
     }
 
+   
     
+    foreach ($_SESSION['rolledItem'] as $prize){
+        foreach ($prize as $item){
+            $lastPrizeID = handlePrize($pdo, $user_id, $item['item_id']);
+        }
+    }
+   
+    
+    if($stock_sum == 0){
+        $_SESSION['error'] = 'Error: No stock available.';
+    }
+    header("Location: gacha.php?id=" . urlencode($game_id_from_url));
+    $_SESSION['lastPrizeID'] = $lastPrizeID;
+    exit;
 }
 
 
@@ -91,6 +103,44 @@ $rolledItems = isset($_SESSION['rolledItem']) ? $_SESSION['rolledItem'] : [];
     <link rel="stylesheet" href="product_page.css">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <title>box</title>
+    <link rel="stylesheet" href="product_page.css">
+    <link rel="stylesheet" href="style.css">
+    <style>.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}</style>
 </head>
 <body>
     <div class="menu_bar">
@@ -105,6 +155,12 @@ $rolledItems = isset($_SESSION['rolledItem']) ? $_SESSION['rolledItem'] : [];
             <li><a href="logout.php">Logout</a></li>
         </ul>
     </div>
+    <div class="scrolling_container">
+        <div class="group">
+            <marquee behavior="" direction="right">Congrats <?php echo $lastPrizeWinner;?> had won <?php echo $lastPrizeItemID;?></marquee>
+        </div>
+    </div> 
+
     <div class="container">
         <div class="col-1">
             <img src="upload/<?php echo htmlspecialchars($game_img); ?>" alt="box">
@@ -143,29 +199,59 @@ $rolledItems = isset($_SESSION['rolledItem']) ? $_SESSION['rolledItem'] : [];
         </div>
     </div>
 
-    <!-- Winner popup -->
-    <div class="winner" id="winnerpage" data-show-popup="<?php echo !empty($rolledItems) ? 'true' : 'false'; ?>">
+
+    <div class="winner" id="winnerpage" data-show-popup="<?php echo !empty($_SESSION['rolledItem']) ? 'true' : 'false'; ?>">
         <button class="close-btn" onclick="closePopup()">✖</button>
-        <?php if (!empty($rolledItems)): ?>
+        <?php if (!empty($_SESSION['rolledItem'])): ?>
             <h2>Congrats You Won</h2>
             <div class="winner-items">
-                <?php foreach ($rolledItems as $item): ?>
+                <?php foreach ($_SESSION['rolledItem'] as $prizes): ?>
+                    <?php foreach ($prizes as $prize) : ?>
                     <div class="winner-item">
-                        <img src="upload/<?php echo htmlspecialchars($item['item_img']); ?>" alt="Item image">
-                        <p><?php echo htmlspecialchars($item['item_name']); ?></p>
+                        <img src="upload/<?php echo htmlspecialchars($prize['item_img']); ?>" alt="Item image">
+                        <p><?php echo htmlspecialchars($prize['item_name']); ?></p>
                     </div>
+                    <?php endforeach; ?>
                 <?php endforeach; ?>
             </div>
             <?php
-            // Unset or destroy the rolledItem session after displaying it
+           
             unset($_SESSION['rolledItem']);
             ?>
         <?php endif; ?>
     </div>
 
-    <!-- Confetti canvas -->
+ 
     <canvas id="confettiCanvas" class="confetti-canvas"></canvas>
 
     <script src="gacha.js"></script>
+
+    <?php if (isset($_SESSION['error'])): ?>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p><?php echo addslashes($_SESSION['error']); ?></p>
+        </div>
+    </div>
+    <script>
+        var modal = document.getElementById("myModal");
+        var span = document.getElementsByClassName("close")[0];
+        modal.style.display = "block";
+        span.onclick = function() {
+            modal.style.display = "none";
+            window.location.href='index.php';
+        }
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+                window.location.href='index.php';
+            }
+        }
+
+
+    </script>
+    <?php unset($_SESSION['error']); ?>
+    <?php endif; ?>
+<script src="gacha.js"></script>
 </body>
 </html>
