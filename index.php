@@ -9,6 +9,24 @@ try {
     ");
     $stmt->execute();
     $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $gamestmt = $pdo->prepare("SELECT DISTINCT game_id FROM game_items");
+    $gamestmt->execute();
+    $game_ids = $gamestmt->fetchAll(PDO::FETCH_COLUMN);
+
+    foreach ($game_ids as $game_id) {
+        $stockstmt = $pdo->prepare("SELECT SUM(items.stock) as stock_sum FROM items INNER JOIN game_items ON items.id = game_items.item_id WHERE game_items.game_id = :game_id");
+        $stockstmt->bindParam(':game_id', $game_id);
+        $stockstmt->execute();
+        $stock_sum = $stockstmt->fetch(PDO::FETCH_ASSOC)['stock_sum'];
+
+        if ($stock_sum == 0) {
+            $deletestmt = $pdo->prepare("DELETE FROM game WHERE id = :game_id");
+            $deletestmt->bindParam(':game_id', $game_id);
+            $deletestmt->execute();
+            header("Refresh:1");
+        }
+    }
 } catch (PDOException $e) {
     die("Query failed: " . $e->getMessage());
 }

@@ -1,7 +1,7 @@
 <?php
 include("dbh.inc.php");
 include("session.php");
-
+include("lastPrize.php");
 $game_id_from_url = isset($_GET['id']) ? $_GET['id'] : null;
 $userCredits = $_SESSION['user_credits'];
 
@@ -72,16 +72,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
     } else {
         echo "<script>alert('Insufficient credits!');</script>";
     }
-
-   
-    
     foreach ($_SESSION['rolledItem'] as $prize){
         foreach ($prize as $item){
             $lastPrizeID = handlePrize($pdo, $user_id, $item['item_id']);
         }
     }
-   
-    
     if($stock_sum == 0){
         $_SESSION['error'] = 'Error: No stock available.';
     }
@@ -100,14 +95,12 @@ $rolledItems = isset($_SESSION['rolledItem']) ? $_SESSION['rolledItem'] : [];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gacha Game</title>
-    <link rel="stylesheet" href="product_page.css">
-    <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
-    <title>box</title>
     <link rel="stylesheet" href="product_page.css">
     <link rel="stylesheet" href="style.css">
-    <style>.modal {
+  
+    <style>
+  .modal {
     display: none;
     position: fixed;
     z-index: 1;
@@ -160,7 +153,6 @@ $rolledItems = isset($_SESSION['rolledItem']) ? $_SESSION['rolledItem'] : [];
             <marquee behavior="" direction="right">Congrats <?php echo $lastPrizeWinner;?> had won <?php echo $lastPrizeItemID;?></marquee>
         </div>
     </div> 
-
     <div class="container">
         <div class="col-1">
             <img src="upload/<?php echo htmlspecialchars($game_img); ?>" alt="box">
@@ -198,8 +190,6 @@ $rolledItems = isset($_SESSION['rolledItem']) ? $_SESSION['rolledItem'] : [];
             </div>
         </div>
     </div>
-
-
     <div class="winner" id="winnerpage" data-show-popup="<?php echo !empty($_SESSION['rolledItem']) ? 'true' : 'false'; ?>">
         <button class="close-btn" onclick="closePopup()">✖</button>
         <?php if (!empty($_SESSION['rolledItem'])): ?>
@@ -221,11 +211,8 @@ $rolledItems = isset($_SESSION['rolledItem']) ? $_SESSION['rolledItem'] : [];
         <?php endif; ?>
     </div>
 
- 
     <canvas id="confettiCanvas" class="confetti-canvas"></canvas>
-
-    <script src="gacha.js"></script>
-
+  
     <?php if (isset($_SESSION['error'])): ?>
     <div id="myModal" class="modal">
         <div class="modal-content">
