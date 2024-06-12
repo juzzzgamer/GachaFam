@@ -47,7 +47,7 @@ try {
                 <h3><?php echo htmlspecialchars($game['game_name']); ?></h3>
                 <p><?php echo htmlspecialchars($game['price']); ?>$</p>
                 <p><?php echo htmlspecialchars($game['game_desc']); ?></p>
-                <p>Credits: <?php echo htmlspecialchars($game['credits']); ?></p>
+                
             </div>
             </a>
             <?php endforeach; ?>
