@@ -47,3 +47,53 @@ document.addEventListener('DOMContentLoaded', (event) => {
         updateTotalPrice();
     });
 });
+
+
+
+function showWinnerForm() {
+    document.getElementById('winnerpage').style.display = 'block';
+}
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const winnerPopup = document.getElementById("winnerpage");
+    const showPopup = winnerPopup.getAttribute('data-show-popup') === 'true';
+
+    if (showPopup) {
+        setTimeout(function() {
+            winnerPopup.classList.add("show");
+
+            // Confetti animation
+            let canvas = document.createElement("canvas");
+            document.body.appendChild(canvas);
+
+            canvas.style.position = 'fixed';
+            canvas.style.top = '0';
+            canvas.style.left = '0';
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            canvas.style.pointerEvents = 'none';
+            canvas.style.zIndex = '9999';
+
+            let confettiInstance = confetti.create(canvas, {
+                resize: true,
+                useWorker: true
+            });
+
+            confettiInstance({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 }
+            }).then(() => document.body.removeChild(canvas));
+        }, 300); // Slight delay for the animation to be noticeable
+    }
+});
+
+function closePopup() {
+    const winnerPopup = document.getElementById("winnerpage");
+    winnerPopup.classList.remove("show");
+    setTimeout(function() {
+        winnerPopup.style.display = "none";
+    }, 500); // Matches the transition duration
+}
+

@@ -1,8 +1,12 @@
 <?php
 include("dbh.inc.php");
 include("session.php");
+
 try {
-    $stmt = $pdo->prepare("SELECT id, game_name, game_desc, img, price FROM game");
+    $stmt = $pdo->prepare("SELECT game.id, game.game_name, game.game_desc, game.img, game.price, user.credits 
+        FROM game
+        LEFT JOIN user ON game.user_id = user.id
+    ");
     $stmt->execute();
     $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -33,7 +37,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>gacha</title>
+    <title>Gacha Game</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="listing.css">
 </head>
@@ -41,7 +45,9 @@ try {
     <div class="menu_bar">
         <a href="index.php" class="logo"><h3>Gacha<span>Fam.</span></h3></a>
         <ul>
-        <li><a href="#" id="profile">Welcome, <span style="color:red"><?php echo ("$username")?></span></a></li>
+            <li>Your credits: <?php echo htmlspecialchars($_SESSION['user_credits'] ); ?></li>
+            <li><a href="#" id="profile">Welcome, <span style="color:red"><?php echo htmlspecialchars($username); ?></span></a></li>
+            <li><a href="credit.php">Add Credit</a></li>
             <li><a href="create.php">Create game</a></li>
             <li><a href="cases.html">Cases</a></li>
             <li><a href="cart.html">Cart</a></li>
@@ -59,7 +65,9 @@ try {
                 <h3><?php echo htmlspecialchars($game['game_name']); ?></h3>
                 <p><?php echo htmlspecialchars($game['price']); ?>$</p>
                 <p><?php echo htmlspecialchars($game['game_desc']); ?></p>
+                
             </div>
+            </a>
             <?php endforeach; ?>
         </div>
     </section>
