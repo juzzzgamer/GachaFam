@@ -1,42 +1,26 @@
 <?php
 include("dbh.inc.php");
 include("session.php");
+include("updateCredit.php");
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['amount'])) {
+    $amount = (int)$_POST['amount'];
 
-try {
-    $stmt = $pdo->prepare("SELECT id, credits FROM user WHERE id = ?");
-    $stmt->execute([$user_id]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($user) {
-        $userCredits = $user['credits'];
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['amount'])) {
-            $amount = (int)$_POST['amount'];
-
-            $stmt = $pdo->prepare("UPDATE user SET credits = credits + ? WHERE id = ?");
-            if ($stmt->execute([$amount, $user_id])) {
-                // Fetch updated credits
-                $stmt = $pdo->prepare("SELECT credits FROM user WHERE id = ?");
-                $stmt->execute([$user_id]);
-                $updatedUser = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                if ($updatedUser) {
-                    $_SESSION['user_credits'] = $updatedUser['credits'];
-                    $_SESSION['message'] = "Credits updated successfully!";
-                } else {
-                    $_SESSION['message'] = "Error fetching updated credits.";
-                }
-            } else {
-                $_SESSION['message'] = "Error updating record.";
+    if (updateUserCredits($pdo, $user_id, $amount)) {
+        // Fetch updated credits
+        $updatedUser = fetchUserCredits($pdo, $user_id);
+    
+        if ($updatedUser) {
+            $_SESSION['user_credits'] = $updatedUser['credits'];
+            $_SESSION['message'] = "Credits updated successfully!";
+        } else {
+            $_SESSION['message'] = "Error fetching updated credits.";
             }
-            header('Location: credit.php');
-            exit();
+        } else {
+            $_SESSION['message'] = "Error updating record.";
         }
-    }
-} catch (Exception $e) {
-    die("Query failed: " . $e->getMessage());
+        header('Location: credit.php');
+        exit();
 }
-
 if (isset($_SESSION['message'])) {
     echo $_SESSION['message'];
     unset($_SESSION['message']);
@@ -54,7 +38,7 @@ if (isset($_SESSION['message'])) {
     <div class="menu_bar">
         <a href="index.php" class="logo"><h3>Gacha<span>Fam.</span></h3></a>
         <ul>
-            <li>Your credits: <?php echo htmlspecialchars($credits, ENT_QUOTES, 'UTF-8'); ?></li>
+            <li>Your credits: <?php echo htmlspecialchars($_SESSION['user_credits'], ENT_QUOTES, 'UTF-8'); ?></li>
             <li><a href="#" id="profile">Welcome, <span style="color:red"><?php echo htmlspecialchars($username, ENT_QUOTES, 'UTF-8'); ?></span></a></li>
             <li><a href="credit.php">Add Credit</a></li>
             <li><a href="create.php">Create game</a></li>

@@ -1,7 +1,6 @@
 <?php
 include "dbh.inc.php";
 include "stock_update.php";
-include "session.php";
 function getRandomItem($items) {
     global $pdo;
     $totalProbability = 0;
