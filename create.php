@@ -50,10 +50,9 @@ try {
     <div class="menu_bar">
         <a href="index.php" class="logo"><h3>Gacha<span>Fam.</span></h3></a>
         <ul>
-            <li><a href="#" id="profile">Welcome, <span style="color:red"><?php echo ($username); ?></span></a></li>
-            <li><a href="create.php">Create listing</a></li>
-            <li><a href="cases.html">Cases</a></li>
-            <li><a href="cart.html">Cart</a></li>
+        <li><a href="#" id="profile">Welcome, <span style="color:red"><?php echo ("$username")?></span></a></li>
+            <li><a href="create.php">Create game</a></li>
+            <li><a href="prize.php">History</a></li>
             <li><a href="logout.php">Logout</a></li>
         </ul>
     </div>    

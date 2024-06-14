@@ -150,5 +150,5 @@
     margin: 5px 0;
     padding: 0;
     width: 100%;
-    animation: my-animation 24s linear infinite;
+    animation: my-animation 3s linear 1; /* Faster and runs only once */
 }

@@ -1,7 +1,7 @@
 <?php
 include("dbh.inc.php");
 include("session.php");
-include("lastPrize.php");
+
 $quantity = isset($_POST['quantity']) ? $_POST['quantity'] : 1;
 $game_id_from_url = isset($_GET['id']) ? $_GET['id'] : null;
 if($game_id_from_url !== null){
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
     $_SESSION['rolledItem'] = $rolledItem;
     foreach ($_SESSION['rolledItem'] as $prize){
         foreach ($prize as $item){
-            $lastPrizeID = handlePrize($pdo, $user_id, $item['item_id']);
+            handlePrize($pdo, $user_id, $item['item_id']);
         }
     }
     if($quantity > $stock_sum && $stock_sum != 0){
@@ -55,8 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
         $_SESSION['error'] = 'Error: No stock available.';
     }
     header("Location: gacha.php?id=" . urlencode($game_id_from_url));
-    $_SESSION['lastPrizeID'] = $lastPrizeID;
-    exit;
 }
 ?>
 
@@ -107,17 +105,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
         <a href="index.php" class="logo"><h3>Gacha<span>Fam.</span></h3></a>
         <ul>
         <li><a href="#" id="profile">Welcome, <span style="color:red"><?php echo ("$username")?></span></a></li>
-            <li><a href="create.php">Create listing</a></li>
-            <li><a href="cases.html">Cases</a></li>
-            <li><a href="cart.html">Cart</a></li>
+            <li><a href="create.php">Create game</a></li>
+            <li><a href="prize.php">History</a></li>
             <li><a href="logout.php">Logout</a></li>
         </ul>
     </div>
-    <div class="scrolling_container">
-        <div class="group">
-            <marquee behavior="" direction="right">Congrats <?php echo $lastPrizeWinner;?> had won <?php echo $lastPrizeItemID;?></marquee>
-        </div>
-    </div> 
     <div class="container">
         <div class="col-1">
             <img src="upload/<?php echo htmlspecialchars($game_img); ?>" alt="box" srcset="">
@@ -178,7 +170,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
                 window.location.href='index.php';
             }
         }
-
 
     </script>
     <?php unset($_SESSION['error']); ?>
