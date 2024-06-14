@@ -2,15 +2,6 @@
 include("dbh.inc.php");
 include("session.php");
 
-if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
-    exit;
-}
-
-$username = $_SESSION['username'];
-$user_id = $_SESSION['user_id'];
-$userCredits = $_SESSION['user_credits'];
-
 try {
     $stmt = $pdo->prepare("SELECT id, credits FROM user WHERE id = ?");
     $stmt->execute([$user_id]);
@@ -19,26 +10,38 @@ try {
     if ($user) {
         $userCredits = $user['credits'];
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['amount'])) {
             $amount = (int)$_POST['amount'];
 
             $stmt = $pdo->prepare("UPDATE user SET credits = credits + ? WHERE id = ?");
             if ($stmt->execute([$amount, $user_id])) {
-                // Update user credits in session
-                $_SESSION['user_credits'] += $amount;
-                echo "Credits added successfully!";
+                // Fetch updated credits
+                $stmt = $pdo->prepare("SELECT credits FROM user WHERE id = ?");
+                $stmt->execute([$user_id]);
+                $updatedUser = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                if ($updatedUser) {
+                    $_SESSION['user_credits'] = $updatedUser['credits'];
+                    $_SESSION['message'] = "Credits updated successfully!";
+                } else {
+                    $_SESSION['message'] = "Error fetching updated credits.";
+                }
             } else {
-                echo "Error updating record.";
+                $_SESSION['message'] = "Error updating record.";
             }
+            header('Location: credit.php');
+            exit();
         }
-    } else {
-        echo "User not found.";
     }
-} catch (PDOException $e) {
+} catch (Exception $e) {
     die("Query failed: " . $e->getMessage());
 }
-?>
 
+if (isset($_SESSION['message'])) {
+    echo $_SESSION['message'];
+    unset($_SESSION['message']);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,7 +64,7 @@ try {
         </ul>
     </div>
 
-    <form method="post">
+    <form method="post" action="credit.php">
         <label for="amount">Amount:</label>
         <input type="number" id="amount" name="amount" required>
         <input type="submit" value="Add Credits">
