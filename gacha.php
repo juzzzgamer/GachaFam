@@ -4,6 +4,8 @@ include("session.php");
 
 $quantity = isset($_POST['quantity']) ? $_POST['quantity'] : 1;
 $game_id_from_url = isset($_GET['id']) ? $_GET['id'] : null;
+$userCredits = $_SESSION['user_credits'];
+
 if($game_id_from_url !== null){
     try {
     $stmt = $pdo->prepare("SELECT game.game_name AS game_name, game.user_id,
@@ -30,6 +32,7 @@ if($game_id_from_url !== null){
             $item_img[] = $row['item_img'];
             $probabilities[] = $row['probability'];
             $stock_sum += $row['item_stock'];
+            $seller_id = $row['user_id'];
             }
         }
     }else {
@@ -39,32 +42,64 @@ if($game_id_from_url !== null){
         die("Query failed: " . $e->getMessage());
     }
 }
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
     include "calc_probability.php";
-    $rolledItem = handleGachaRoll($pdo, $game_id_from_url, $quantity);
-    $_SESSION['rolledItem'] = $rolledItem;
+    $quantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
+    $totalPrice = $game_price * $quantity;
+
+    if ($userCredits >= $totalPrice) {
+        if($quantity > $stock_sum && $stock_sum != 0){
+            $_SESSION['error'] = 'Error: Quantity of roll cannot be greater than sum of stock.';
+            exit;
+        }
+        
+        $rolledItem = handleGachaRoll($pdo, $game_id_from_url, $quantity);
+
+      
+        $stmt = $pdo->prepare("UPDATE user SET credits = credits - ? WHERE id = ?");
+        $stmt->execute([$totalPrice, $user_id]);
+
+    
+        $stmt = $pdo->prepare("UPDATE user SET credits = credits + ? WHERE id = ?");
+        $stmt->execute([$totalPrice, $seller_id]);
+
+        $_SESSION['rolledItem'] = $rolledItem;
+        $_SESSION['user_credits'] -= $totalPrice;
+
+        header("Location: gacha.php?id=" . urlencode($game_id_from_url));
+        exit;
+    } else {
+        echo "<script>alert('Insufficient credits!');</script>";
+    }
     foreach ($_SESSION['rolledItem'] as $prize){
         foreach ($prize as $item){
             handlePrize($pdo, $user_id, $item['item_id']);
         }
-    }
-    if($quantity > $stock_sum && $stock_sum != 0){
-        $_SESSION['error'] = 'Error: Quantity of roll cannot be greater than sum of stock.';
     }
     if($stock_sum == 0){
         $_SESSION['error'] = 'Error: No stock available.';
     }
     header("Location: gacha.php?id=" . urlencode($game_id_from_url));
 }
+
+
+$rolledItems = isset($_SESSION['rolledItem']) ? $_SESSION['rolledItem'] : [];
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>box</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gacha Game</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" href="product_page.css">
     <link rel="stylesheet" href="style.css">
-    <style>.modal {
+  
+    <style>
+  .modal {
     display: none;
     position: fixed;
     z-index: 1;
@@ -100,7 +135,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
 }</style>
 </head>
 <body>
-    
     <div class="menu_bar">
         <a href="index.php" class="logo"><h3>Gacha<span>Fam.</span></h3></a>
         <ul>
@@ -112,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
     </div>
     <div class="container">
         <div class="col-1">
-            <img src="upload/<?php echo htmlspecialchars($game_img); ?>" alt="box" srcset="">
+            <img src="upload/<?php echo htmlspecialchars($game_img); ?>" alt="box">
             <p>Created by: <a href="details.php?username=<?php echo urlencode($game_username); ?>"><?php echo htmlspecialchars($game_username); ?></a></p> 
         </div>
         <div class="col-2">
@@ -120,35 +154,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
                 <p class="product-name"><?php echo htmlspecialchars($game_name); ?></p>
                 <p class="price">Price: <span class="priceValue"><?php echo htmlspecialchars($game_price); ?></span>$</p>
                 <div class="btn">
-                <form action="gacha.php?id=<?php echo urlencode($game_id);?>" method="post">
-                    <button class="btn1 btn-decrement">-</button>
-                    <input type="text" id="quantity" class="btn-input" name="quantity" value="1">
-                    <button class="btn1 btn-increment">+</button>
-                    <input type="hidden" name="game_id" value="<?php echo htmlspecialchars($game_id); ?>">
-                    <div class="purchase">
-                        <button id="purchase" name="roll">buy</button>
-                    </div>
-                </form>
+                    <form action="gacha.php?id=<?php echo urlencode($game_id); ?>" method="post">
+                        <button class="btn1 btn-decrement">-</button>
+                        <input type="text" id="quantity" class="btn-input" name="quantity" value="1">
+                        <button class="btn1 btn-increment">+</button>
+                        <input type="hidden" name="game_id" value="<?php echo htmlspecialchars($game_id); ?>">
+                        <div class="purchase">
+                            <button id="purchase" name="roll" onclick="showWinnerForm()">Buy</button>
+                        </div>
+                    </form>
                     <div class="total-amount">
-                        <h1>total-amount</h1>
+                        <h1>Total Amount</h1>
                         <p class="total-price" id="tPrice">
-                            <span id="totalPrice"> <?php echo htmlspecialchars($game_price); ?>
-                            </span>
+                            <span id="totalPrice"> <?php echo htmlspecialchars($game_price); ?></span>
                         </p>
                     </div>
                 </div>
             </div>
             <div class="product_img-container">
                 <div class="product_img">
-                <?php foreach ($item_img as $i => $img): ?>
-                <img src="upload/<?php echo htmlspecialchars($img); ?>" alt="<?php echo htmlspecialchars($img); ?>">
-                <p><?php echo ($probabilities[$i]); ?></p>
-            <?php endforeach; ?>
-            </div>
+                    <?php foreach ($item_img as $i => $img): ?>
+                    <img src="upload/<?php echo htmlspecialchars($img); ?>" alt="<?php echo htmlspecialchars($img); ?>">
+                    <p><?php echo number_format($probabilities[$i] * 100, 2) . '%'; ?></p>
+                    <?php endforeach ?>
                 </div>
             </div>
         </div>
     </div>
+    <div class="winner" id="winnerpage" data-show-popup="<?php echo !empty($_SESSION['rolledItem']) ? 'true' : 'false'; ?>">
+        <button class="close-btn" onclick="closePopup()">✖</button>
+        <?php if (!empty($_SESSION['rolledItem'])): ?>
+            <h2>Congrats You Won</h2>
+            <div class="winner-items">
+                <?php foreach ($_SESSION['rolledItem'] as $prizes): ?>
+                    <?php foreach ($prizes as $prize) : ?>
+                    <div class="winner-item">
+                        <img src="upload/<?php echo htmlspecialchars($prize['item_img']); ?>" alt="Item image">
+                        <p><?php echo htmlspecialchars($prize['item_name']); ?></p>
+                    </div>
+                    <?php endforeach; ?>
+                <?php endforeach; ?>
+            </div>
+            <?php
+           
+            unset($_SESSION['rolledItem']);
+            ?>
+        <?php endif; ?>
+    </div>
+
+    <canvas id="confettiCanvas" class="confetti-canvas"></canvas>
+  
     <?php if (isset($_SESSION['error'])): ?>
     <div id="myModal" class="modal">
         <div class="modal-content">

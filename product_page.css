@@ -134,21 +134,3 @@
     transform: scale(1.03);
     box-shadow: 0 0 4px rgb(255, 126, 223);
 }
-
-.group{
-    position: relative;
-    height: 30px;
-    overflow: hidden;
-    color: white;
-    background-color: rgb(30, 30, 30);
-    border-bottom: 2px solid cyan;
-    border-top: 2px solid cyan;
-}
-
-.group marquee{
-    position: absolute;
-    margin: 5px 0;
-    padding: 0;
-    width: 100%;
-    animation: my-animation 3s linear 1; /* Faster and runs only once */
-}
