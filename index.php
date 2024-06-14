@@ -19,13 +19,6 @@ try {
         $stockstmt->bindParam(':game_id', $game_id);
         $stockstmt->execute();
         $stock_sum = $stockstmt->fetch(PDO::FETCH_ASSOC)['stock_sum'];
-
-        if ($stock_sum == 0) {
-            $deletestmt = $pdo->prepare("DELETE FROM game WHERE id = :game_id");
-            $deletestmt->bindParam(':game_id', $game_id);
-            $deletestmt->execute();
-            header("Refresh:1");
-        }
     }
 } catch (PDOException $e) {
     die("Query failed: " . $e->getMessage());
@@ -33,7 +26,7 @@ try {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en">    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -49,25 +42,25 @@ try {
             <li><a href="#" id="profile">Welcome, <span style="color:red"><?php echo htmlspecialchars($username); ?></span></a></li>
             <li><a href="credit.php">Add Credit</a></li>
             <li><a href="create.php">Create game</a></li>
-            <li><a href="cases.html">Cases</a></li>
-            <li><a href="cart.html">Cart</a></li>
+            <li><a href="prize.php">History</a></li>
             <li><a href="logout.php">Logout</a></li>
         </ul>
     </div>
     
     <section class="SPECIAL">
-        <h2>SPECIAL</h2>
+        <h2>GAMES</h2>
         <div class="box-container">
             <?php foreach ($games as $game): ?>
-            <a href="gacha.php?id=<?php echo urlencode($game['id']); ?>" class="box-link" style="text-decoration: none;">
-            <div class="box">
+                <?php if ($stock_sum != 0) :?>
+                <a href="gacha.php?id=<?php echo urlencode($game['id']); ?>" class="box-link" style="text-decoration: none;">
+                <div class="box">
                 <img src="upload/<?php echo htmlspecialchars($game['img']); ?>" alt="<?php echo htmlspecialchars($game['game_name']); ?>">
                 <h3><?php echo htmlspecialchars($game['game_name']); ?></h3>
                 <p><?php echo htmlspecialchars($game['price']); ?>$</p>
                 <p><?php echo htmlspecialchars($game['game_desc']); ?></p>
                 
             </div>
-            </a>
+            <?php endif; ?>
             <?php endforeach; ?>
         </div>
     </section>
