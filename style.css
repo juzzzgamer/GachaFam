@@ -58,6 +58,18 @@ body {
     color: var(--color-primary);
 }
 
+.credits-display {
+    display: flex;
+    align-items: center;
+    color: var(--color-white);
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.credits-amount {
+    margin-left: 5px;
+}
+
 .box-container {
     display: flex;
     flex-wrap: wrap;
