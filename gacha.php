@@ -4,7 +4,6 @@ include("session.php");
 
 $quantity = isset($_POST['quantity']) ? $_POST['quantity'] : 1;
 $game_id_from_url = isset($_GET['id']) ? $_GET['id'] : null;
-$userCredits = $_SESSION['user_credits'];
 
 if($game_id_from_url !== null){
     try {
@@ -46,44 +45,33 @@ if($game_id_from_url !== null){
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
     include "calc_probability.php";
-    $quantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
-    $totalPrice = $game_price * $quantity;
-
-    if ($userCredits >= $totalPrice) {
-        if($quantity > $stock_sum && $stock_sum != 0){
-            $_SESSION['error'] = 'Error: Quantity of roll cannot be greater than sum of stock.';
-            exit;
-        }
-        
-        $rolledItem = handleGachaRoll($pdo, $game_id_from_url, $quantity);
-
-      
-        $stmt = $pdo->prepare("UPDATE user SET credits = credits - ? WHERE id = ?");
-        $stmt->execute([$totalPrice, $user_id]);
-
+    if (isset($quantity)){
+        $totalPrice = $game_price * $quantity;
+        if ($userCredits >= $totalPrice) {
+            if($quantity > $stock_sum && $stock_sum != 0){
+                $_SESSION['error'] = 'Error: Quantity of roll cannot be greater than sum of stock.';
+            }else{
+            $rolledItem = handleGachaRoll($pdo, $game_id_from_url, $quantity);
+          
+            $stmt = $pdo->prepare("UPDATE user SET credits = credits - ? WHERE id = ?");
+            $stmt->execute([$totalPrice, $user_id]);
     
-        $stmt = $pdo->prepare("UPDATE user SET credits = credits + ? WHERE id = ?");
-        $stmt->execute([$totalPrice, $seller_id]);
-
-        $_SESSION['rolledItem'] = $rolledItem;
-        $_SESSION['user_credits'] -= $totalPrice;
-
-        header("Location: gacha.php?id=" . urlencode($game_id_from_url));
-        exit;
-    } else {
-        echo "<script>alert('Insufficient credits!');</script>";
-    }
-    foreach ($_SESSION['rolledItem'] as $prize){
-        foreach ($prize as $item){
-            handlePrize($pdo, $user_id, $item['item_id']);
+        
+            $stmt = $pdo->prepare("UPDATE user SET credits = credits + ? WHERE id = ?");
+            $stmt->execute([$totalPrice, $seller_id]);
+    
+            $_SESSION['rolledItem'] = $rolledItem;
+            }
+    
+        } else {
+            echo "<script>alert('Insufficient credits!');</script>";
         }
+        if($stock_sum == 0){
+            $_SESSION['error'] = 'Error: No stock available.';
+        }
+        header("Location: gacha.php?id=" . urlencode($game_id_from_url));
     }
-    if($stock_sum == 0){
-        $_SESSION['error'] = 'Error: No stock available.';
-    }
-    header("Location: gacha.php?id=" . urlencode($game_id_from_url));
 }
-
 
 $rolledItems = isset($_SESSION['rolledItem']) ? $_SESSION['rolledItem'] : [];
 ?>
@@ -138,10 +126,12 @@ $rolledItems = isset($_SESSION['rolledItem']) ? $_SESSION['rolledItem'] : [];
     <div class="menu_bar">
         <a href="index.php" class="logo"><h3>Gacha<span>Fam.</span></h3></a>
         <ul>
-        <li><a href="#" id="profile">Welcome, <span style="color:red"><?php echo ("$username")?></span></a></li>
-            <li><a href="create.php">Create game</a></li>
-            <li><a href="prize.php">History</a></li>
-            <li><a href="logout.php">Logout</a></li>
+        <li>Your credits: <?php echo htmlspecialchars($_SESSION['user_credits'] ); ?></li>
+                <li><a href="#" id="profile">Welcome, <span style="color:red"><?php echo htmlspecialchars($username, ENT_QUOTES, 'UTF-8'); ?></span></a></li>
+                <li><a href="credit.php">Add Credit</a></li>
+                <li><a href="create.php">Create game</a></li>
+                <li><a href="prize.php">History</a></li>
+                <li><a href="logout.php">Logout</a></li>
         </ul>
     </div>
     <div class="container">
@@ -191,7 +181,7 @@ $rolledItems = isset($_SESSION['rolledItem']) ? $_SESSION['rolledItem'] : [];
                     <div class="winner-item">
                         <img src="upload/<?php echo htmlspecialchars($prize['item_img']); ?>" alt="Item image">
                         <p><?php echo htmlspecialchars($prize['item_name']); ?></p>
-                    </div>
+                    </div>  
                     <?php endforeach; ?>
                 <?php endforeach; ?>
             </div>
