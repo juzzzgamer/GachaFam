@@ -65,23 +65,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
         $stmt->execute([$totalPrice, $seller_id]);
 
         $_SESSION['rolledItem'] = $rolledItem;
-        $_SESSION['user_credits'] -= $totalPrice;
+        foreach ($_SESSION['rolledItem'] as $a){
+            foreach ($a as $b){
+                $lastPrizeID = handlePrize($pdo, $user_id, $b['item_id']);
+            }
+        }
+        $_SESSION['lastPrizeID'] = $lastPrizeID;
 
         header("Location: gacha.php?id=" . urlencode($game_id_from_url));
         exit;
     } else {
         echo "<script>alert('Insufficient credits!');</script>";
     }
-    foreach ($_SESSION['rolledItem'] as $prize){
-        foreach ($prize as $item){
-            $lastPrizeID = handlePrize($pdo, $user_id, $item['item_id']);
-        }
-    }
     if($stock_sum == 0){
         $_SESSION['error'] = 'Error: No stock available.';
     }
     header("Location: gacha.php?id=" . urlencode($game_id_from_url));
-    $_SESSION['lastPrizeID'] = $lastPrizeID;
     exit;
 }
 
@@ -139,7 +138,7 @@ $rolledItems = isset($_SESSION['rolledItem']) ? $_SESSION['rolledItem'] : [];
     <div class="menu_bar">
         <a href="index.php" class="logo"><h3>Gacha<span>Fam.</span></h3></a>
         <ul>
-            <li>Your credits: <?php echo htmlspecialchars($_SESSION['user_credits'] ); ?></li>
+            <li>Your credits: <?php echo htmlspecialchars($credits); ?></li>
             <li><a href="#" id="profile">Welcome, <span style="color:red"><?php echo htmlspecialchars($username); ?></span></a></li>
             <li><a href="credit.php">Add Credit</a></li>
             <li><a href="create.php">Create game</a></li>
