@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
     <div class="container">
         <div class="col-1">
             <img src="upload/<?php echo htmlspecialchars($game_img, ENT_QUOTES, 'UTF-8'); ?>" alt="box">
-            <p>Created by: <a href="details.php?username=<?php echo urlencode($game_username, ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($game_username, ENT_QUOTES, 'UTF-8'); ?></a></p> 
+            <p>Created by: <a href="details.php?username=<?php echo urlencode($game_username); ?>"><?php echo htmlspecialchars($game_username, ENT_QUOTES, 'UTF-8'); ?></a></p> 
         </div>
         <div class="col-2">
             <div class="product-container">
@@ -156,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
 
         </div>
     </div>
-        <div class="winner" id="winnerpage" data-show-popup="<?php echo !empty($_SESSION['rolledItem'], ENT_QUOTES, 'UTF-8') ? 'true' : 'false'; ?>">
+        <div class="winner" id="winnerpage" data-show-popup="<?php echo !empty($_SESSION['rolledItem']) ? 'true' : 'false'; ?>">
             <button class="close-btn" onclick="closePopup()">✖</button>
             <?php if (!empty($_SESSION['rolledItem'])): ?>
                 <h2>Congrats You Won</h2>

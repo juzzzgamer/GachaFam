@@ -85,7 +85,7 @@ try {
                                         
                                         <td><img src="upload/<?php echo htmlspecialchars($bHistory['item_img'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($bHistory['item_name'], ENT_QUOTES, 'UTF-8'); ?>"></td>
                                         <td><?php echo htmlspecialchars($bHistory['item_name'], ENT_QUOTES, 'UTF-8'); ?></td>
-                                        <td><a href="details.php?username=<?php echo urlencode($bHistory['owner_name'], ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($bHistory['owner_name'], ENT_QUOTES, 'UTF-8'); ?></a></td>
+                                        <td><a href="details.php?username=<?php echo urlencode($bHistory['owner_name']); ?>"><?php echo htmlspecialchars($bHistory['owner_name'], ENT_QUOTES, 'UTF-8'); ?></a></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
@@ -113,7 +113,7 @@ try {
                             <tr>
                                 <td><img src="upload/<?php echo htmlspecialchars($sHistory['item_img'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($sHistory['item_name'], ENT_QUOTES, 'UTF-8'); ?>"></td>
                                 <td><?php echo htmlspecialchars($sHistory['item_name'], ENT_QUOTES, 'UTF-8'); ?></td>
-                                <td><a href="details.php?username=<?php echo urlencode($sHistory['winner_name'], ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($sHistory['winner_name'], ENT_QUOTES, 'UTF-8'); ?></a></td>
+                                <td><a href="details.php?username=<?php echo urlencode($sHistory['winner_name']); ?>"><?php echo htmlspecialchars($sHistory['winner_name'], ENT_QUOTES, 'UTF-8'); ?></a></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
