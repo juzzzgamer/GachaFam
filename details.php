@@ -92,7 +92,7 @@ if($username_id_from_url !== null){
             <p><strong>Username:</strong> <?php echo $username; ?></p>
             <p><strong>Email:</strong> <?php echo $email; ?></p>
         </div>
-        <a href="prize.php" class="back-link">Back</a>
+        <a href="javascript:history.back()" class="back-link">Back</a>
     </div>
 </body>
 </html>
