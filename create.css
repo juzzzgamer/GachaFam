@@ -11,7 +11,7 @@
 body {
     margin: 0;
     padding: 0;
-    background: url("background.jpg") no-repeat center center fixed;
+    background: url("index_bg.jpg") no-repeat center center fixed;
     background-size: cover;
     box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif;
@@ -23,12 +23,7 @@ body {
     justify-content: flex-start;
     align-items: center;
     min-height: 100vh;
-<<<<<<< HEAD
-    padding: 20px; 
-=======
-    padding: 20px;
->>>>>>> origin/mike
-
+    padding-top: 7%;
 }
 
 .container {
@@ -37,14 +32,21 @@ body {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-<<<<<<< HEAD
-    backdrop-filter: blur(10px); 
-    -webkit-backdrop-filter: blur(10px); 
-=======
-    backdrop-filter: blur(10px); /* Blur effect */
-    -webkit-backdrop-filter: blur(10px); /* For Safari */
->>>>>>> origin/mike
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 2px solid var(--color-white);
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 h1, h2 {
@@ -52,22 +54,6 @@ h1, h2 {
     color: var(--color-white);
     text-align: center;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-}
-
-.createBoard {
-    width: 100%;
-    max-width: 800px;
-    padding: 20px;
-    border-radius: 10px;
-    border: 2px solid var(--color-input-border);
-    background-color: var(--color-white);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px); /* Blur effect */
-    -webkit-backdrop-filter: blur(10px); /* For Safari */
 }
 
 .entryarea {
@@ -81,7 +67,7 @@ h1, h2 {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-input {
+input, select {
     width: 80%;
     max-width: 400px;
     outline: none;
@@ -90,15 +76,16 @@ input {
     border-radius: 10px;
     border: 2px solid var(--color-input-border);
     background: transparent;
-    transition: border 0.1s ease, color 0.1s ease;
+    transition: border 0.1s ease, color 0.1s ease, transform 0.2s;
     margin-bottom: 15px;
     color: var(--color-white);
 }
 
-input:focus,
-input:valid {
+input:focus, select:focus,
+input:valid, select:valid {
     color: var(--color-input-text);
     border: 2px solid var(--color-input-focus);
+    transform: scale(1.05);
 }
 
 button {
@@ -112,12 +99,13 @@ button {
     margin: 20px auto;
     display: block;
     width: fit-content;
-    transition: 400ms;
+    transition: background-color 0.4s, color 0.4s, transform 0.2s;
 }
 
 button:hover {
     background-color: var(--color-primary);
     color: black;
+    transform: scale(1.05);
 }
 
 .additional-options {
@@ -125,7 +113,6 @@ button:hover {
     flex-direction: column;
     align-items: center;
     margin-top: 20px;
-
 }
 
 .additional-options p {
@@ -170,21 +157,19 @@ button:hover {
     margin-bottom: 10px;
 }
 
-.item-detail h3 {
+.item-detail h3, .item-detail p {
     margin: 10px 0;
     color: var(--color-white);
+    transition: transform 0.3s ease-in-out;
 }
 
-.item-detail p {
-    margin: 5px 0;
-    color: var(--color-white);
-<<<<<<< HEAD
+.item-detail:hover h3, .item-detail:hover p {
+    transform: scale(1.1);
 }
 
 .select-button {
     align-items: center;
     text-align: center;
-    
 }
 
 .checkbox-container {
@@ -195,7 +180,7 @@ button:hover {
 }
 
 .checkbox-container input[type="checkbox"] {
-    display: none; 
+    display: none;
 }
 
 .checkbox-container label {
@@ -224,19 +209,9 @@ button:hover {
 }
 
 .entryarea select {
-    width: 80%;
-    max-width: 400px;
-    outline: none;
-    font-size: 1em;
-    padding: 10px;
-    border-radius: 10px;
-    border: 2px solid var(--color-input-border);
-    background: transparent;
-    color: var(--color-white);
     appearance: none;
     -webkit-appearance: none;
     cursor: pointer;
-    margin-bottom: 15px;
     background-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z' fill='%23fff'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 10px center;
@@ -250,6 +225,19 @@ button:hover {
     background-color: var(--color-background);
     color: var(--color-white);
     padding: 10px;
-=======
->>>>>>> origin/mike
+}
+
+#imagePreview {
+    display: block;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid var(--color-input-border);
+    margin-top: 10px;
+    transition: transform 0.2s ease-in-out;
+}
+
+#imagePreview:hover {
+    transform: scale(1.1);
 }
