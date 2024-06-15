@@ -80,7 +80,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
     }
 }
 
+
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -172,6 +175,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
                     <?php foreach ($item_img as $i => $img): ?>
                     <img src="upload/<?php echo htmlspecialchars($img); ?>" alt="<?php echo htmlspecialchars($img); ?>">
                     <p><?php echo number_format($probabilities[$i] * 100, 2) . '%'; ?></p>
+                    <span><?php echo htmlspecialchars($item_name); ?></span>
                     <?php endforeach ?>
                 </div>
             </div>
@@ -196,30 +200,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
 
     <canvas id="confettiCanvas" class="confetti-canvas"></canvas>
   
-    <?php if (isset($_SESSION['error'])): ?>
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <p><?php echo addslashes($_SESSION['error']); ?></p>
-        </div>
-    </div>
-    <script>
-        var modal = document.getElementById("myModal");
-        var span = document.getElementsByClassName("close")[0];
-        modal.style.display = "block";
-        span.onclick = function() {
-            modal.style.display = "none";
-            window.location.href='index.php';
-        }
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-                window.location.href='index.php';
-            }
-        }
-
-    </script>
-    <?php endif; ?>
+   
 <script src="gacha.js"></script>
 </body>
 </html>
