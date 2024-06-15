@@ -11,7 +11,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['amount'])) {
     
         if ($updatedUser) {
             $_SESSION['user_credits'] = $updatedUser['credits'];
-            $_SESSION['message'] = "Credits updated successfully!";
+              $_SESSION['error_message'] = "Credits updated successfully";
+            header("Location: credit.php");
+            exit();
         } else {
             $_SESSION['message'] = "Error fetching updated credits.";
             }
@@ -33,6 +35,8 @@ if (isset($_SESSION['message'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Credits</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
 </head>
 <body>
     <div class="menu_bar">

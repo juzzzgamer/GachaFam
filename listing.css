@@ -1,79 +1,151 @@
-/* Existing styles for category1 section */
+:root {
+    --color-primary: #156bff;
+    --color-white: #fff;
+    --color-black: #5f5f5f;
+    --color-black-1: #211919;
+    --gradient-bg: linear-gradient(red,#5f5f5f, black);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: var(--color-black-1);
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--color-white);
+}
+
 .SPECIAL {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-  }
+  max-width: 1200px;
+  margin: 40px auto; /* Increase margin to create more space */
+  padding: 5px;
+  background: #282828;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  text-align: center ;
+}
+
+.SPECIAL h2 {
+  text-align: center;
+  color: var(--color-white);
+  font-size: 2em;
+  margin-bottom: 20px;
+
+  display: inline-block;
+  padding-bottom: 10px;
   
-  .SPECIAL h2 {
-    text-align: center;
-    color: white;
+}
+
+.SPECIAL .box-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px; /* Gap between the boxes */
+}
+
+.box {
+  background: var(--gradient-bg);
+  border-radius: 15px;
+  padding: 25px; /* Increase padding for bigger boxes */
+  width: 250px; /* Adjusted width to fit three boxes per row */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin: 10px; /* Reduce margin to bring boxes closer */
+  position: relative;
+  overflow: hidden;
+}
+
+.box:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.3);
+}
+
+.box::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.1);
+  transform: rotate(45deg);
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.box:hover::before {
+  opacity: 0;
+}
+
+.box img {
+  width: 100%; /* Make the image responsive */
+  height: auto; /* Maintain aspect ratio */
+  max-height: 250px; /* Limit max height to prevent overly large images */
+  object-fit: cover;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+
+.box:hover img {
+  transform: scale(1.05);
+}
+
+.box h3 {
+  font-size: 1.5em;
+  margin: 15px 0;
+  color: var(--color-white);
+}
+
+.box p {
+  font-size: 1em;
+  margin: 5px 0;
+  color: var(--color-white);
+  opacity: 0.8;
+}
+
+.section-title {
+  text-align: center;
+  color: var(--color-white);
+  margin: 20px 0;
+}
+
+.best-deals {
+  max-width: 1200px;
+  margin: 40px auto; /* Increase margin to create more space */
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.best-deals h2 {
+  text-align: center;
+  color: var(--color-white);
+  font-size: 2em;
+  margin-bottom: 20px;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+}
+
+.best-deals .box-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px; /* Gap between the boxes */
+}
+
+@media (max-width: 768px) {
+  .menu_bar ul li {
+      padding: 10px 15px;
   }
-  
-  .SPECIAL .box-container {
-    display: flex;
-    justify-content: center;
+  .menu_bar ul li a {
+      font-size: 18px;
   }
-  
-  /* Existing styles for best-deals section */
-  .best-deals {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 20px;
-  }
-  
-  .best-deals h2 {
-    text-align: center;
-    color: white;
-  }
-  
-  .best-deals .box-container {
-    display: flex;
-    justify-content: center;
-  }
-  
-  /* New styles for random section */
-  .random {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 20px;
-  }
-  
-  .random h2 {
-    text-align: center;
-  }
-  
-  .random .box-container {
-    display: flex;
-    justify-content: center;
-  }
-  
   .box {
-    margin: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 300px;
-    transition: box-shadow 0.3s ease; /* Adding transition effect */
+      margin: 10px;
+      width: calc(100% - 40px);
   }
-  
-  .box:hover {
-    box-shadow: 0 0 10px cyan; /* Adding shadow on hover */
-  }
-  
-  .box img {
-    width: 100%;
-    max-width: 100%;
-    height: auto;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-  }
-  
-  .box h3 {
-    margin: 10px;
-    font-size: 1.2em;
-  }
-  
-  .box p {
-    margin: 0 10px 10px;
-  }
- 
+}
