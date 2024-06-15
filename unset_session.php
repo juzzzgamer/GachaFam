@@ -1,15 +1,20 @@
 <?php
 session_start();
+$response = ['status' => 'success', 'messages' => []];
+
 if (isset($_SESSION['rolledItem'])) {
     unset($_SESSION['rolledItem']);
-    echo json_encode(['status' => 'success']);
+    $response['messages'][] = ['rolledItem' => 'Session variable unset successfully.'];
 } else {
-    echo json_encode(['status' => 'error', 'message' => 'Session variable not set.']);
+    $response['messages'][] = ['rolledItem' => 'Session variable not set.'];
 }
+
 if (isset($_SESSION['error'])) {
     unset($_SESSION['error']);
-    echo json_encode(['status' => 'success']);
+    $response['messages'][] = ['error' => 'Session variable unset successfully.'];
 } else {
-    echo json_encode(['status' => 'error', 'message' => 'Session variable not set.']);
+    $response['messages'][] = ['error' => 'Session variable not set.'];
 }
+
+echo json_encode($response);
 ?>
