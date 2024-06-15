@@ -26,7 +26,6 @@ function deductStock($pdo, $item_id, $quantity) {
         $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);   
         $stmt->execute();
 
-        // No alerts for stock deduction
     } catch (PDOException $e) {
         echo "Connection failed: " . $e->getMessage();
     }

@@ -22,12 +22,7 @@ try {
         <title>Upload</title>
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="create.css">
-        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-       
-
-        
-        
-        
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>     
         <script>
             function showItemForm(){
                 document.getElementById('itemFields').style.display = 'block';
@@ -60,12 +55,12 @@ try {
         <div class="menu_bar">
             <a href="index.php" class="logo"><h3>Gacha<span>Fam.</span></h3></a>
             <ul>
-                <li>Your credits: <?php echo htmlspecialchars($_SESSION['user_credits'] ); ?></li>
-                <li><a href="#" id="profile">Welcome, <span style="color:red"><?php echo htmlspecialchars($username, ENT_QUOTES, 'UTF-8'); ?></span></a></li>
-                <li><a href="credit.php">Add Credit</a></li>
-                <li><a href="create.php">Create game</a></li>
-                <li><a href="prize.php">History</a></li>
-                <li><a href="logout.php">Logout</a></li>
+            <li>Your credits: <?php echo htmlspecialchars($_SESSION['user_credits'] ); ?></li>
+            <li><a href="profile.php" id="profile">Welcome, <span style="color:red"><?php echo htmlspecialchars($username); ?></span></a></li>
+            <li><a href="credit.php">Add Credit</a></li>
+            <li><a href="create.php">Create game</a></li>
+            <li><a href="prize.php">History</a></li>
+            <li><a href="logout.php">Logout</a></li>
             </ul>
         </div>    
         <div class="page-container">  

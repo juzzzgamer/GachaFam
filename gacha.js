@@ -17,8 +17,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     function updateTotalPrice() {
         if(totalPriceElement){
-            const totalPrice = quantity * priceValue;
-            totalPriceElement.textContent = totalPrice;
+        const totalPrice = quantity * priceValue;
+        totalPriceElement.textContent = totalPrice;
         }
     }
 
@@ -36,9 +36,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
             quantityInput.value = quantity;
             updateTotalPrice();
         }
-    });
-
-    quantityInput.addEventListener('input', (event) => {
+     });
+     quantityInput.addEventListener('input', (event) => {
         event.preventDefault();
         quantity = parseInt(quantityInput.value);
         if (isNaN(quantity) || quantity < 1) {
@@ -49,19 +48,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 });
 
-function showWinnerForm(event) {
-    event.preventDefault();
-    document.getElementById('winnerpage').style.display = 'block';
 
-   
-    Swal.fire({
-        title: 'Congratulations!',
-        text: 'You won an item!',
-        icon: 'success',
-        confirmButtonText: 'Close'
-    }).then(() => {
-        document.querySelector('form').submit(); 
-    });
+
+function showWinnerForm() {
+    document.getElementById('winnerpage').style.display = 'block';
 }
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -72,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function() {
         setTimeout(function() {
             winnerPopup.classList.add("show");
 
-           
+            // Confetti animation
             let canvas = document.createElement("canvas");
             document.body.appendChild(canvas);
 
@@ -121,7 +111,7 @@ function closePopup() {
     xhr.send();
 }
 
-var modal = document.getElementById("myModal");
+/*var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
 modal.style.display = "block";
 span.onclick = function() {
@@ -147,4 +137,4 @@ window.onclick = function(event) {
         modal.style.display = "none";
         unsetSessionVariable(); 
     }
-}
+}*/

@@ -12,3 +12,7 @@ loginLink.addEventListener('click', function(){
     registerForm.style.display="none";
     loginForm.style.display="block";
 })
+document.getElementById('forgotPassword').addEventListener('click', function(event) {
+    event.preventDefault();
+    alert('Please contact the admin to reset your password.');
+});

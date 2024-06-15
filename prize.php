@@ -55,7 +55,9 @@ try {
     <div class="menu_bar">
         <a href="index.php" class="logo"><h3>Gacha<span>Fam.</span></h3></a>
         <ul>
-        <li><a href="#" id="profile">Welcome, <span style="color:red"><?php echo ("$username")?></span></a></li>
+        <li>Your credits: <?php echo htmlspecialchars($_SESSION['user_credits'] ); ?></li>
+            <li><a href="profile.php" id="profile">Welcome, <span style="color:red"><?php echo htmlspecialchars($username); ?></span></a></li>
+            <li><a href="credit.php">Add Credit</a></li>
             <li><a href="create.php">Create game</a></li>
             <li><a href="prize.php">History</a></li>
             <li><a href="logout.php">Logout</a></li>
@@ -88,7 +90,7 @@ try {
                     <div class="prize">
                         <img src="upload/<?php echo htmlspecialchars($sHistory['item_img']); ?>" alt="<?php echo htmlspecialchars($sHistory['item_name']); ?>">
                         <p>Item: <?php echo htmlspecialchars($sHistory['item_name']); ?></p>
-                        <p>Winner: <?php echo htmlspecialchars($sHistory['winner_name']); ?></p>
+                        <p>Winner: <a href="details.php?username=<?php echo urlencode($sHistory['winner_name']); ?>"><?php echo htmlspecialchars($sHistory['winner_name']); ?></a></p>
                     </div>
                 </div>
             <?php endforeach; ?>
