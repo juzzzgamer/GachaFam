@@ -1,53 +1,221 @@
-*{
-    margin: 0%;
-    padding: 0%;
-    box-sizing: border-box;
+:root {
+    --color-primary: #156bff;
+    --color-white: #fff;
+    --color-black: #000;
+    --color-black-1: #211919;
 }
-.container{
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #5f5f5f;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.listings {
+    display: inline-block;
+}
+
+.logo {
+    text-decoration: none;
+    color: var(--color-white);
+    font-size: 30px;
+    text-decoration: none;
+}
+
+.logo span {
+    color: var(--color-primary);
+}
+
+.menu_bar {
+    background: #282828;
+    height: 80px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1%;
+}
+
+.menu_bar ul {
+    display: flex;
+    list-style: none;
+}
+
+.menu_bar ul li {
+    padding: 10px 30px;
+}
+
+.menu_bar ul li a {
+    color: var(--color-white);
+    text-decoration: none;
+    font-size: 22px;
+    transition: all 0.3s;
+}
+
+.menu_bar ul li a:hover {
+    color: var(--color-primary);
+}
+
+.box-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px; 
+    z-index: -1;
+}
+
+.box {
+    background-color: var(--color-white);
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 300px;
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.box img {
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 1/1; 
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.box img:hover {
+    transform: scale(1.05);
+}
+
+.box h3 {
+    font-size: 1.5em;
+    margin: 10px 0;
+}
+
+.box p {
+    font-size: 1em;
+    margin: 5px 0;
+    color: var(--color-black);
+}
+
+.section-title {
+    text-align: center;
+    color: var(--color-white);
+    margin: 20px 0;
+}
+
+@media (max-width: 768px) {
+    .menu_bar ul li {
+        padding: 10px 15px;
+    }
+    .menu_bar ul li a {
+        font-size: 18px;
+    }
+}
+
+.container {
     display: flex;
     width: 80%;
     margin: auto;
     position: relative;
     top: 60px;
-    box-shadow: inset 0.1px 0.1px 5px rgb(70,69,69),
-                      0.1px 0.1px 5px rgb(82,82,82) ;
-    padding: 8px;  
-    border-radius: 20px 20px 20px 20px;                
+    box-shadow: inset 0.1px 0.1px 5px rgb(70, 69, 69),
+                      0.1px 0.1px 5px rgb(82, 82, 82);
+    padding: 8px;
+    border-radius: 20px;
+    animation: fadeIn 1s ease-in-out;
+    background-color: #222024;
+    /* Glowing effect */
+    box-shadow: 0 0 10px #156bff, inset 0 0 10px #156bff;
 }
-.col-1{
-    width: 40%; 
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+
+.col-1 {
+    width: 40%;
     text-align: center;
 }
-.col-1 img{
+
+.col-1 img {
     width: 530px;
     height: auto;
     margin-top: 50px;
-    padding-left: 20px;
+    padding-left: 80px;
+    border-radius: 10px;
+   
 }
-.col-2{
+
+.col-1 p{
+    font-size: 18px;
+    color: white;
+}
+
+
+.col-2 {
     width: 100%;
     margin: 20px;
     padding-left: 70px;
 }
-.product-container{
+
+.product-container {
     width: 80%;
     margin: auto;
     padding-top: 20px;
+    text-align: center;
+   
 }
-.product-name{
+
+.product-name {
     font-size: 35px;
     text-transform: capitalize;
     color: rgb(255, 255, 255);
     margin-bottom: 20px;
+    animation: slideInFromLeft 1s ease-in-out;
+    text-align: center;
+   
 }
-.price{
+
+@keyframes slideInFromLeft {
+    from {
+        transform: translateX(-10%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.price {
     margin: 20px 0px 20px 0px;
     font-size: 25px;
     text-transform: capitalize;
     color: rgb(255, 255, 255);
     letter-spacing: 1px;
+   
 }
-.btn1{
+
+.btn-container {
+    display: flex;
+    align-items: center;
+}
+
+.btn-group {
+    
+    align-items: center;
+  
+}
+.btn1 {
     width: 30px;
     height: 30px;
     outline: none;
@@ -57,14 +225,23 @@
     cursor: pointer;
     font-weight: bold;
     font-size: 15px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+
 }
-.btn-decrement:hover{
+
+.btn-decrement:hover {
     background-color: red;
+    transform: scale(1.1);
+    
+    
 }
-.btn-increment:hover{
-    background-color:green;
+
+.btn-increment:hover {
+    background-color: green;
+    transform: scale(1.1);
 }
-.btn-input{
+
+.btn-input {
     width: 50px;
     height: 30px;
     outline: none;
@@ -73,64 +250,241 @@
     box-shadow: 0px 0px 5px 1px rgb(27,101,238);
     color: rgb(49,49,49);
     text-align: center;
+    
 }
-.purchase button{
-    align-items: center;
-    font-size: 18px;
-    justify-content: center;
+.purchase a{
+    font-size: 15px;
+    color: cyan;
+}
+.purchase button {
+    padding: 15px 40px;
+    border: none;
+    outline:none;
+    color: #fff;
+    position: relative;
+    z-index: 0;
+    border-radius: 12px;
+    margin-left: 10px;
+    margin-bottom: 50px;
+    margin-top: 15px ;
+    width: 350px;
+}
+
+.purchase button::after {
+    content: "";
+    z-index: -1;
+    position: absolute;
     width: 100%;
-    background-color: rgb(6, 111, 231);
-    color: white;
-    padding: 10px 20px;
-    cursor: pointer;
+    height: 100%;
+    background-color: #333;
+    left: 0;
+    top: 0;
+    border-radius:10px; 
 }
-.purchase button:hover {
-    background-color: #dcdd;
-    color: black;
+
+.purchase button::before {
+    content: "";
+    background: linear-gradient(
+        45deg,
+        #e90000,#ff6100 , #fff500, #05fb00,
+        #31d5c8 , #33a7c8, #001eba, #a538c6
+    );
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    background-size: 600%;
+    z-index: -1;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    filter: blur(8px);
+    animation: glowing 20s linear infinite;
+    transition: opacity .3s ease-in-out;
+    border-radius: 12px; /* Adjust the radius to match your button */
+    opacity: 1;
 }
-.total-amount h1{
-    font-size: 35px;
-    text-transform: capitalize;
-    color: rgb(255, 255, 255);
-    margin: 20px 0px 20px 0px;
+
+@keyframes glowing {
+    0% { background-position: 0 0; }
+    50% { background-position: 400% 0; }
+    100% { background-position: 0 0; }
 }
-.total-price{
+
+.purchase button:hover::before {
+    opacity: 1;
+}
+
+.purchase button:hover:after{
+    background: transparent;
+}
+
+.total-price {
     width: 200px;
     height: 30px;
     font-size: 20px;
     font-weight: 700;
-    color: rgb(255, 255, 255);
-    box-shadow: 0px 0px 5px 1px rgb(27,101,238);
+    color: #ffffff; /* Use hex color for better consistency */
+    box-shadow: 0 0 5px 1px #1b65ee; /* Use hex color here as well */
     line-height: 30px;
-    padding-left: 15px;
+    margin: 15px auto; /* Center horizontally in the flex container */
+    text-align: center; /* Ensure text is centered */
+    display: block; /* Ensure it's a block-level element for margin auto to work */
+    background-color: transparent; /* Ensure background is consistent */
+    border: none; /* Remove any default border */
 }
-.box_contain{
+
+.box_contain {
     font-size: 20px;
     color: white;
     text-align: center;
 }
 
-.product_img{
-    display:flex;
+.product_img {
+    display: flex;
     width: 580px;
     height: 180px;
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
-
 }
-::-webkit-scrollbar{
+
+::-webkit-scrollbar {
     display: none;
 }
-.product_img img{
+
+.product_img img {
     width: 200px;
     height: 150px;
     border: 1px solid #ff3d0036;
     border-radius: 13px;
     margin: 10px;
-    transition: 400ms;
+    transition: transform 0.3s ease;
 }
-.product_img img:hover{
-    transform: scale(1.03);
+
+.product_img img:hover {
+    transform: scale(1.1);
     box-shadow: 0 0 4px rgb(255, 126, 223);
 }
+
+
+.winner {
+    margin: 50px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    width: auto;
+    max-height: 100%;
+    overflow-y: auto;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.5s ease-in-out;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.winner.show {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.winner h2 {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.winner-items {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    max-height: 70vh; /* Limit height to 70% of viewport height */
+    overflow-y: auto; /* Enable scrolling if items exceed the height */
+    padding: 10px; /* Add some padding */
+}
+
+.winner-item {
+    text-align: center; 
+    width: 200px; /* Adjust width as needed */
+    margin: 10px; /* Adjust margins */
+}
+
+.winner-item img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    transition: transform 0.3s ease;
+}
+
+.winner .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.winner .close-btn:hover {
+    color: red;
+}
+
+
+.product_img-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.product_img {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+}
+
+.item {
+    text-align: center;
+    color: var(--color-white);
+}
+
+.item img {
+    width: 150px;
+    height: 120px;
+    border: 1px solid #ff3d0036;
+    border-radius: 13px;
+    margin: 1px;
+    transition: transform 0.3s ease;
+    
+}
+
+.item img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 4px rgb(255, 126, 223);
+}
+
+.item h3, .item p {
+    margin: 5px 0;
+   
+}
+
+.item h3 {
+    color: var(--color-white);
+}
+
+.item p {
+    color: var(--color-white);
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+

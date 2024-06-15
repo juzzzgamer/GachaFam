@@ -6,8 +6,7 @@ if (isset($_POST['registerbtn'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
     $password = md5($password);
-
-    // Check if email exists
+  
     $checkEmailStmt = $pdo->prepare("SELECT * FROM user WHERE email = :email");
     $checkEmailStmt->bindParam(':email', $email);
     $checkEmailStmt->execute();
@@ -15,7 +14,6 @@ if (isset($_POST['registerbtn'])) {
     if ($checkEmailStmt->rowCount() == 1) {
         echo "<script>alert('Email address exists!'); window.location.href = 'login.php';</script>";
     } else {
-        // Insert new user
         $insertStmt = $pdo->prepare("INSERT INTO user (email, username, password) VALUES (:email, :username, :password)");
         $insertStmt->bindParam(':email', $email);
         $insertStmt->bindParam(':username', $username);
@@ -33,8 +31,7 @@ if (isset($_POST['loginbtn'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
     $passwordhash = md5($password);
-
-    // Check username and password
+  
     $loginStmt = $pdo->prepare("SELECT * FROM user WHERE username = :username AND password = :password");
     $loginStmt->bindParam(':username', $username);
     $loginStmt->bindParam(':password', $passwordhash);
@@ -45,10 +42,11 @@ if (isset($_POST['loginbtn'])) {
         session_start();
         $_SESSION['user_id'] = $row['id'];
         $_SESSION['username'] = $row['username'];
+        $_SESSION['user_credits'] = $row['credits'];
 
         if (isset($_POST['remember'])) {
-            setcookie('uname', $username, time() + 60 * 60);
-            setcookie('pass', $password, time() + 60 * 60);
+            setcookie('uname', $username, time() + 60 * 60 * 24);
+            setcookie('pass', $password, time() + 60 * 60 * 24);
         }
 
         header("location: index.php");

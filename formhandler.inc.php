@@ -2,8 +2,8 @@
 require_once "dbh.inc.php"; 
 include "session.php";
 include "stock_update.php";
+
 function handleFileUpload($file, $pathPrefix = 'upload/') {
-    // File upload handling code
     $img_name = $file["name"];
     $img_size = $file["size"];
     $tmp_name = $file["tmp_name"];
@@ -48,13 +48,15 @@ function handleMultipleFileUploads($files, $pathPrefix = 'upload/') {
             $uploadedFileName = handleFileUpload($file, $pathPrefix);
             $uploadedFiles[] = $uploadedFileName;
         } catch (Exception $e) {
-            // Handle errors for individual files
-            echo "Error uploading file {$name}: " . $e->getMessage() . "<br>";
+            $_SESSION['error_message'] = "Error uploading file {$name}: " . $e->getMessage();
+            header("Location: create.php");
+            exit();
         }
     }
 
     return $uploadedFiles;
 }
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['createGame'])){
     if (isset($_POST["Name"], $_POST['desc'], $_POST['price'], $_FILES['img'], $user_id, $_POST['selectedItem'], $_POST['probabilities']) && !empty($_POST['selectedItem']) && !empty($_POST['probabilities'])){
         $name = $_POST["Name"];
@@ -62,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['createGame'])){
         $price = $_POST["price"];
         $main_img_name = handleFileUpload($_FILES["img"]);  
 
-        $selectedItem = $_POST['selectedItem']; // This will be an array of item IDs
+        $selectedItem = $_POST['selectedItem'];
         $probabilities = $_POST['probabilities'];
 
         $cummulativeProbability = 0;
@@ -76,14 +78,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['createGame'])){
                 foreach ($selectedItem as $item_id) {
                     $probability = isset($probabilities[$item_id]) ? $probabilities[$item_id] : 0;
                     if (!is_numeric($probability)) {
-                        echo "<script>alert('Invalid probability value for item ID: $item_id'); window.location.href = 'create.php';</script>";
-                        exit;
+                        $_SESSION['error_message'] = "Invalid probability value";
+                        header("Location: create.php");
+                        exit();
                     }
                     $cummulativeProbability += $probability;
                     if ($cummulativeProbability > 1){
-                        echo "<script>alert('Total probability can only be in range 0 - 1'); window.location.href = 'create.php';</script>";
-                        exit;
-                    }else{
+                        $_SESSION['error_message'] = "Total probability can only be in range 0 - 1";
+                        header("Location: create.php");
+                        exit();
+                    } else {
                         $stmt = $pdo->prepare("INSERT INTO game_items (game_id, item_id, probability) VALUES (:game_id, :item_id, :probability)");
                         $stmt->bindParam(':game_id', $last_game_id, PDO::PARAM_INT);
                         $stmt->bindParam(':item_id', $item_id, PDO::PARAM_INT);
@@ -92,58 +96,58 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['createGame'])){
                     }
                 }
             $pdo->commit();
-            echo "<script>alert('Game created. Items successfully added to the game.'); window.location.href = 'create.php';</script>";
+            $_SESSION['success_message'] = "Game created. Items successfully added to the game.";
+            header("Location: create.php");
             exit();
         }   catch (Exception $e) {
-            // Rollback transaction on exception
             $pdo->rollBack();
-            echo "<script>alert('" . $e->getMessage() . "'); window.location.href = 'create.php';</script>";
+            $_SESSION['error_message'] = $e->getMessage();
+            header("Location: create.php");
             exit();
         } 
     }
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['itemsUpload'])) {
-    // Check for required fields
     if (isset($_POST['itemsName'], $_FILES['itemsImg'], $user_id)) {
         $itemsName = $_POST['itemsName'];
         $itemsImg = $_FILES['itemsImg'];
 
         try {
-            // Start transaction
             $pdo->beginTransaction();
 
             $item_img = handleMultipleFileUploads($_FILES["itemsImg"]);
             foreach ($itemsName as $i => $item_name) {
                 $item_img_name = $item_img[$i] ?? null;
                 if ($item_img_name) {
-                    $query = "INSERT INTO items (user_id, name, img, stock) VALUES (?, ?, ?, ?)";
+                    $query = "INSERT INTO items (user_id, name, img, stock) VALUES (?, ?, ?, '0')";
                     $stmt = $pdo->prepare($query);
-                    $stmt->execute([$user_id, $item_name, $item_img_name, '0']);
+                    $stmt->execute([$user_id, $item_name, $item_img_name]);
                 }
             }
-            // Commit transaction
             $pdo->commit();
+            $_SESSION['success_message'] = "Items uploaded successfully.";
             header("Location: create.php");
             exit();
         } catch (Exception $e) {
-            // Rollback transaction on exception
             $pdo->rollBack();
-            echo "<script>alert('" . $e->getMessage() . "'); window.location.href = 'create.php';</script>";
+            $_SESSION['error_message'] = $e->getMessage();
+            header("Location: create.php");
             exit();
         }
     } else {
-        // Handle case where required fields are not set
-        echo "One or more required fields are not set.";
+        $_SESSION['error_message'] = "One or more required fields are not set.";
+        header("Location: create.php");
+        exit();
     }
 }elseif($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['stockUpdate'])) {
     if ($_POST['quantity']) {
         $itemID = $_POST['id'];
         $quantity = $_POST['quantity'];
         increaseStock($pdo, $itemID, $quantity);
+        $_SESSION['success_message'] = "Stock updated successfully.";
     }
 }
 else {
-    // Redirect if not a POST request
     header("Location: create.php");
     exit();
 }

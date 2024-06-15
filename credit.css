@@ -1,0 +1,167 @@
+:root {
+    --color-primary: #156bff;
+    --color-white: #fff;
+    --color-black: #000;
+    --color-input-border: #ccc;
+    --color-input-focus: lightgreen;
+    --color-input-text: lightgreen;
+    --color-background: #5f5f5f;
+    --color-green: #4caf50; /* New green color */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    background: url("create_bg.jpg") no-repeat center center fixed;
+    background-size: cover;
+}
+
+.page-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color:rgb(54, 47, 47);
+    text-align: center;
+    color: var(--color-white);
+    animation: fadeIn 0.5s ease;
+    margin-bottom: 180px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.container h2 {
+    margin-bottom: 20px;
+    color: var(--color-primary);
+    animation: slideInLeft 0.5s ease;
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.container form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeIn 0.5s ease;
+}
+
+.container form label {
+    margin-bottom: 10px;
+    color: var(--color-white);
+    animation: slideInRight 0.5s ease;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.container form input[type="number"] {
+    width: 100%;
+    max-width: 300px;
+    padding: 12px;
+    font-size: 1em;
+    border-radius: 5px;
+    border: 2px solid var(--color-input-border);
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-white);
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    animation: slideInLeft 0.5s ease;
+}
+
+.container form input[type="number"]:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 10px var(--color-primary);
+}
+
+.container form input[type="submit"] {
+    width: 100%;
+    max-width: 200px;
+    margin-top: 15px;
+    padding: 12px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--color-primary);
+    color: var(--color-black);
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    animation: slideInRight 0.5s ease;
+}
+
+.container form input[type="submit"]:hover {
+    background-color: #0e4ab8;
+    transform: scale(1.05);
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+.container a {
+    display: inline-block;
+    margin-top: 20px;
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color 0.3s;
+    animation: slideInLeft 0.5s ease;
+}
+
+.container a:hover {
+    color: #0e4ab8;
+    animation: slideInRight 0.5s ease;
+}
+
+.money {
+    color: var(--color-green); /* Change money color to green */
+    margin-bottom: 10px;
+    animation: slideInLeft 0.5s ease;
+}
+
+@media (max-width: 480px) {
+    .container {
+        max-width: 100%;
+    }
+}
