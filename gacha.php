@@ -2,7 +2,7 @@
 include("dbh.inc.php");
 include("session.php");
 include("updateCredit.php");
-include "calc_probability.php";
+include ("calc_probability.php");
 
 $quantity = isset($_POST['quantity']) ? $_POST['quantity'] : 1;
 $game_id_from_url = isset($_GET['id']) ? $_GET['id'] : null;
@@ -44,14 +44,13 @@ if($game_id_from_url !== null){
     }
 }
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
     if ($quantity){
         $totalPrice = $game_price * $quantity;
+        if($quantity > $stock_sum && $stock_sum != 0){
+            $_SESSION['error'] = 'Error: Quantity of roll cannot be greater than sum of stock.';
+        }else {
         if ($_SESSION['user_credits'] >= $totalPrice) {
-            if($quantity > $stock_sum && $stock_sum != 0){
-                $_SESSION['error'] = 'Error: Quantity of roll cannot be greater than sum of stock.';
-            }else{
             $rolledItem = handleGachaRoll($pdo, $game_id_from_url, $quantity);
           
             $stmt = $pdo->prepare("UPDATE user SET credits = credits - ? WHERE id = ?");
@@ -68,16 +67,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
             } else {
                 $_SESSION['error'] = 'Failed to fetch user credits.';
             }
-            }
     
         } else {
-            echo "<script>alert('Insufficient credits!');</script>";
+            $_SESSION['error'] = 'Error: Insufficient credit.';
         }
         if($stock_sum == 0){
             $_SESSION['error'] = 'Error: No stock available.';
         }
         header("Location: gacha.php?id=" . urlencode($game_id_from_url));
     }
+}
 }
 
 ?>
@@ -203,22 +202,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
             <p><?php echo addslashes($_SESSION['error']); ?></p>
         </div>
     </div>
-    <script>
-        var modal = document.getElementById("myModal");
-        var span = document.getElementsByClassName("close")[0];
-        modal.style.display = "block";
-        span.onclick = function() {
-            modal.style.display = "none";
-            window.location.href='index.php';
-        }
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-                window.location.href='index.php';
-            }
-        }
-
-    </script>
     <?php endif; ?>
 <script src="gacha.js"></script>
 </body>

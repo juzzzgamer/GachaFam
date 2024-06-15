@@ -116,7 +116,6 @@ var span = document.getElementsByClassName("close")[0];
 modal.style.display = "block";
 span.onclick = function() {
     modal.style.display = "none";
-    window.location.href='index.php';
     unsetSessionVariable(); 
 };
 
@@ -136,7 +135,6 @@ function unsetSessionVariable() {
 window.onclick = function(event) {
     if (event.target == modal) {
         modal.style.display = "none";
-        window.location.href='index.php';
         unsetSessionVariable(); 
     }
 }
