@@ -77,15 +77,15 @@ $user = $stmt->fetch();
 <head>
     <meta charset="UTF-8">
     <title>Edit Profile</title>
-    <link rel="stylesheet" href="profiles.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="style.css">    
 </head>
 <body>
 <div class="menu_bar">
         <a href="index.php" class="logo"><h3>Gacha<span>Fam.</span></h3></a>
         <ul>
-        <li>Your credits: <?php echo htmlspecialchars($_SESSION['user_credits'] ); ?></li>
             <li><a href="profile.php" id="profile">Welcome, <span style="color:red"><?php echo htmlspecialchars($username); ?></span></a></li>
+            <li class="credits-display">&#128178 <span class="credits-amount"><?php echo htmlspecialchars($_SESSION['user_credits']); ?></span></li>
             <li><a href="credit.php">Add Credit</a></li>
             <li><a href="create.php">Create game</a></li>
             <li><a href="prize.php">History</a></li>
@@ -103,8 +103,8 @@ $user = $stmt->fetch();
     <a href="javascript:history.back()" class="back-button"> <-Back</a>
     <form method="post">
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="<?= $user['email'] ?>" required>
-        <input type="submit" name="update_profile" value="Update Profile">
+        <input type="email" id="email" name="email" value="<?= $user['email'] ?>" required><br>
+        <input type="submit" name="update_profile" value="Update Profile"><br>
         <a href="#" id="updatePasswordLink">Update password?</a>
     </form>
     </div>

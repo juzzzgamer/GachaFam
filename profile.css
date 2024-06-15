@@ -13,9 +13,7 @@ body, h2, p, form, input, a {
 
 /* Basic styles for body */
 body {
-    font-family: 'Arial', sans-serif;
-    
-    color: #333;
+    color: white;
     line-height: 1.6;
     margin: 0;
     padding: 0;
@@ -43,8 +41,6 @@ body {
     transition: background-color 0.3s ease;
 }
 
-.back-button:hover {
-}   
 h2 {
     margin-bottom: 20px;
     color: #333;
@@ -55,7 +51,7 @@ h2 {
 label {
     display: block;
     margin-bottom: 8px;
-    color: #555;
+    color: #ddd;
     font-weight: bold;
 }
 
@@ -88,7 +84,6 @@ input[type="submit"]:hover {
 a {
     display: block;
     text-align: center;
-    margin-top: 10px;
     color: #007bff;
     text-decoration: none;
     transition: color 0.3s ease;
