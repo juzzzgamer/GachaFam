@@ -1,16 +1,20 @@
-    <!DOCTYPE html>
-    <?php 
-    include("session.php"); 
-    include ("dbh.inc.php");
-    try {
-        $stmt = $pdo->prepare("SELECT id, user_id, name, img, stock FROM items WHERE user_id = :user_id");
-        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-        $stmt->execute();
-        $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-        die("Query failed: " . $e->getMessage());
-    }
-    ?>
+
+<?php 
+include("session.php"); 
+include ("dbh.inc.php");
+include ("alert.php");
+try {
+    $stmt = $pdo->prepare("SELECT id, user_id, name, img, stock FROM items WHERE user_id = :user_id");
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die("Query failed: " . $e->getMessage());
+}
+
+
+?>
+<!DOCTYPE html>
     <html lang="en">    
     <head>
         <meta charset="UTF-8">
@@ -18,6 +22,11 @@
         <title>Upload</title>
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="create.css">
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+       
+
+        
+        
         
         <script>
             function showItemForm(){
@@ -47,6 +56,7 @@
         </script>
     </head>
     <body>
+    
         <div class="menu_bar">
             <a href="index.php" class="logo"><h3>Gacha<span>Fam.</span></h3></a>
             <ul>

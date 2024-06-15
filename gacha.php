@@ -79,7 +79,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
 }
 }
 
+
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -171,6 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
                     <?php foreach ($item_img as $i => $img): ?>
                     <img src="upload/<?php echo htmlspecialchars($img); ?>" alt="<?php echo htmlspecialchars($img); ?>">
                     <p><?php echo number_format($probabilities[$i] * 100, 2) . '%'; ?></p>
+                    <span><?php echo htmlspecialchars($item_name); ?></span>
                     <?php endforeach ?>
                 </div>
             </div>
