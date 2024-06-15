@@ -1,6 +1,13 @@
 <?php
 session_start();
 session_destroy();
+if (isset($_GET['success'])) {
+    if ($_GET['success'] === 'profile_updated') {
+        echo '<script>alert("Profile updated successfully.");window.location.href="login.php";</script>';
+    } elseif ($_GET['success'] === 'password_changed') {
+        echo '<script>alert("Password changed successfully.");window.location.href="login.php";</script>';
+    }
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -148,7 +155,7 @@ session_destroy();
                 </div>
                 <div class="rmbforgot">
                 <label><input type="checkbox" name="remember">Remember me</label>
-                    <a href="#">Forgot password?</a>
+                    <a href="#" id="forgotPassword">Forgot password?</a>
                  </div>
                  <input class ="btn" name="loginbtn" type="submit" value="Login">
                  <div class="register">
@@ -160,7 +167,7 @@ session_destroy();
             <form action="register.php" method="POST">
                 <h1>Register</h1>
                 <div class="inputbox">
-                    <input type="text" name="email" placeholder="Email" required>
+                    <input type="email" name="email" placeholder="Email" required>
                     <i class='bx bx-envelope'></i>
                 </div>
                     <div class="inputbox">
@@ -171,7 +178,6 @@ session_destroy();
                         <input type="password" name="password" placeholder="Password" required>
                         <i class='bx bx-lock-alt'></i>
                     </div>
-                    <label class="tnc"><input type="checkbox">I agree with the terms & condition</label>
                     <input class ="btn" name="registerbtn" type="submit" value="Register">
                      <div class="login">
                          <p>Have an existing account? <a href="#" id="loginLink">Log In</a></p>

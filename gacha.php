@@ -3,6 +3,7 @@ include("dbh.inc.php");
 include("session.php");
 include("updateCredit.php");
 include ("calc_probability.php");
+include ("alert.php");
 
 $quantity = isset($_POST['quantity']) ? $_POST['quantity'] : 1;
 $game_id_from_url = isset($_GET['id']) ? $_GET['id'] : null;
@@ -45,44 +46,44 @@ if($game_id_from_url !== null){
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
-    if ($quantity){
-        $totalPrice = $game_price * $quantity;
-        if($quantity > $stock_sum && $stock_sum != 0){
-            $_SESSION['error'] = 'Error: Quantity of roll cannot be greater than sum of stock.';
-        }else {
-        if ($_SESSION['user_credits'] >= $totalPrice) {
-            $rolledItem = handleGachaRoll($pdo, $game_id_from_url, $quantity);
-          
-            $stmt = $pdo->prepare("UPDATE user SET credits = credits - ? WHERE id = ?");
-            $stmt->execute([$totalPrice, $user_id]);
-    
-        
-            $stmt = $pdo->prepare("UPDATE user SET credits = credits + ? WHERE id = ?");
-            $stmt->execute([$totalPrice, $seller_id]);
-    
-            $_SESSION['rolledItem'] = $rolledItem;
-            $userCredits = fetchUserCredits($pdo, $user_id);
-            if ($userCredits !== null) {
-                $_SESSION['user_credits'] = $userCredits['credits'];
-            } else {
-                $_SESSION['error'] = 'Failed to fetch user credits.';
-            }
-    
-        } else {
-            $_SESSION['error'] = 'Error: Insufficient credit.';
-        }
-        if($stock_sum == 0){
-            $_SESSION['error'] = 'Error: No stock available.';
-        }
-        header("Location: gacha.php?id=" . urlencode($game_id_from_url));
+    if (!$quantity) {
+        return;
     }
-}
-}
 
+    $totalPrice = $game_price * $quantity;
+    if ($quantity > $stock_sum) {
+        $_SESSION['error_message'] = 'Error: Quantity of roll cannot be greater than sum of stock.';
+    } elseif ($stock_sum == 0) {
+        $_SESSION['error_message'] = 'Error: No stock available.';
+    } elseif ($_SESSION['user_credits'] < $totalPrice) {
+        $_SESSION['error_message'] = 'Error: Insufficient credit.';
+    } else {
+        $rolledItem = handleGachaRoll($pdo, $game_id_from_url, $quantity);
 
+        $stmt = $pdo->prepare("UPDATE user SET credits = credits - ? WHERE id = ?");
+        $stmt->execute([$totalPrice, $user_id]);
+
+        $stmt = $pdo->prepare("UPDATE user SET credits = credits + ? WHERE id = ?");
+        $stmt->execute([$totalPrice, $seller_id]);
+
+        $_SESSION['rolledItem'] = $rolledItem;
+        foreach ($_SESSION['rolledItem'] as $prize){
+            foreach ($prize as $item){
+                handlePrize($pdo, $user_id, $item['item_id']);
+            }
+        }
+
+        $userCredits = fetchUserCredits($pdo, $user_id);
+        if ($userCredits !== null) {
+            $_SESSION['user_credits'] = $userCredits['credits'];
+        } else {
+            $_SESSION['error_message'] = 'Failed to fetch user credits.';
+        }
+    }
+    header("Location: gacha.php?id=" . urlencode($game_id_from_url));
+    exit;
+}
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -91,6 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gacha Game</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <link rel="stylesheet" href="product_page.css">
     <link rel="stylesheet" href="style.css">
   
@@ -134,12 +136,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
     <div class="menu_bar">
         <a href="index.php" class="logo"><h3>Gacha<span>Fam.</span></h3></a>
         <ul>
-        <li>Your credits: <?php echo htmlspecialchars($_SESSION['user_credits']); ?></li>
-                <li><a href="#" id="profile">Welcome, <span style="color:red"><?php echo htmlspecialchars($username, ENT_QUOTES, 'UTF-8'); ?></span></a></li>
-                <li><a href="credit.php">Add Credit</a></li>
-                <li><a href="create.php">Create game</a></li>
-                <li><a href="prize.php">History</a></li>
-                <li><a href="logout.php">Logout</a></li>
+        <li>Your credits: <?php echo htmlspecialchars($_SESSION['user_credits'] ); ?></li>
+            <li><a href="profile.php" id="profile">Welcome, <span style="color:red"><?php echo htmlspecialchars($username); ?></span></a></li>
+            <li><a href="credit.php">Add Credit</a></li>
+            <li><a href="create.php">Create game</a></li>
+            <li><a href="prize.php">History</a></li>
+            <li><a href="logout.php">Logout</a></li>
         </ul>
     </div>
     <div class="container">

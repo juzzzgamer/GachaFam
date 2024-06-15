@@ -144,6 +144,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['itemsUpload'])) {
         $itemID = $_POST['id'];
         $quantity = $_POST['quantity'];
         increaseStock($pdo, $itemID, $quantity);
+        $_SESSION['success_message'] = "Stock updated successfully.";
     }
 }
 else {
