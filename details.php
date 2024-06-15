@@ -89,8 +89,8 @@ if($username_id_from_url !== null){
     <div class="container">
         <h1>User Details</h1>
         <div class="details">
-            <p><strong>Username:</strong> <?php echo $username; ?></p>
-            <p><strong>Email:</strong> <?php echo $email; ?></p>
+            <p><strong>Username:</strong> <?php echo htmlspecialchars($username, ENT_QUOTES, 'UTF-8'); ?></p>
+            <p><strong>Email:</strong> <?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?></p>
         </div>
         <a href="javascript:history.back()" class="back-link">Back</a>
     </div>

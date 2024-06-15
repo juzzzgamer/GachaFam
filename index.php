@@ -38,8 +38,8 @@ try {
     <div class="menu_bar">
         <a href="index.php" class="logo"><h3>Gacha<span>Fam.</span></h3></a>
         <ul>
-            <li><a href="profile.php" id="profile">Welcome, <span style="color:red"><?php echo htmlspecialchars($username); ?></span></a></li>
-            <li class="credits-display">&#128178 <span class="credits-amount"><?php echo htmlspecialchars($_SESSION['user_credits'] ); ?></span></li>
+            <li><a href="profile.php" id="profile">Welcome, <span style="color:red"><?php echo htmlspecialchars($username, ENT_QUOTES, 'UTF-8'); ?></span></a></li>
+            <li class="credits-display">&#128178 <span class="credits-amount"><?php echo htmlspecialchars($_SESSION['user_credits'], ENT_QUOTES, 'UTF-8'); ?></span></li>
             <li><a href="credit.php">Add Credit</a></li>
             <li><a href="create.php">Create game</a></li>
             <li><a href="prize.php">History</a></li>
@@ -54,10 +54,10 @@ try {
                 <?php if ($stock_sum != 0) :?>
                 <a href="gacha.php?id=<?php echo urlencode($game['id']); ?>" class="box-link" style="text-decoration: none;">
                 <div class="box">
-                <img src="upload/<?php echo htmlspecialchars($game['img']); ?>" alt="<?php echo htmlspecialchars($game['game_name']); ?>">
-                <h3><?php echo htmlspecialchars($game['game_name']); ?></h3>
-                <p><?php echo htmlspecialchars($game['price']); ?>$</p>
-                <p><?php echo htmlspecialchars($game['game_desc']); ?></p>
+                <img src="upload/<?php echo htmlspecialchars($game['img'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($game['game_name'], ENT_QUOTES, 'UTF-8'); ?>">
+                <h3><?php echo htmlspecialchars($game['game_name'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                <p><?php echo htmlspecialchars($game['price'], ENT_QUOTES, 'UTF-8'); ?>$</p>
+                <p><?php echo htmlspecialchars($game['game_desc'], ENT_QUOTES, 'UTF-8'); ?></p>
                 
             </div>
             <?php endif; ?>
