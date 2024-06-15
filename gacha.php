@@ -101,8 +101,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
 <div class="menu_bar">
         <a href="index.php" class="logo"><h3>Gacha<span>Fam.</span></h3></a>
         <ul>
-        <li><a href="profile.php" id="profile">Welcome, <span style="color:red"><?php echo htmlspecialchars($username); ?></span></a></li>
-            <li class="credits-display">&#128178 <span class="credits-amount" c><?php echo htmlspecialchars($_SESSION['user_credits'] ); ?></span></li>
+        <li><a href="profile.php" id="profile">Welcome, <span style="color:red"><?php echo htmlspecialchars($username, ENT_QUOTES, 'UTF-8'); ?></span></a></li>
+            <li class="credits-display">&#128178 <span class="credits-amount" c><?php echo htmlspecialchars($_SESSION['user_credits'], ENT_QUOTES, 'UTF-8'); ?></span></li>
             <li><a href="credit.php">Add Credit</a></li>
             <li><a href="create.php">Create game</a></li>
             <li><a href="prize.php">History</a></li>
@@ -111,13 +111,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
     </div>
     <div class="container">
         <div class="col-1">
-            <img src="upload/<?php echo htmlspecialchars($game_img); ?>" alt="box">
-            <p>Created by: <a href="details.php?username=<?php echo urlencode($game_username); ?>"><?php echo htmlspecialchars($game_username); ?></a></p> 
+            <img src="upload/<?php echo htmlspecialchars($game_img, ENT_QUOTES, 'UTF-8'); ?>" alt="box">
+            <p>Created by: <a href="details.php?username=<?php echo urlencode($game_username, ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($game_username, ENT_QUOTES, 'UTF-8'); ?></a></p> 
         </div>
         <div class="col-2">
             <div class="product-container">
-                <p class="product-name"><?php echo htmlspecialchars($game_name); ?></p>
-                <p class="price">Price: <span class="priceValue"><?php echo htmlspecialchars($game_price); ?></span>$</p>
+                <p class="product-name"><?php echo htmlspecialchars($game_name, ENT_QUOTES, 'UTF-8'); ?></p>
+                <p class="price">Price: <span class="priceValue"><?php echo htmlspecialchars($game_price, ENT_QUOTES, 'UTF-8'); ?></span>$</p>
                 <div class="btn">
                     <form action="gacha.php?id=<?php echo urlencode($game_id); ?>" method="post">
                         <div class="btn-group">
@@ -129,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
                         <div class="total-amount">
                         
                         <p class="total-price" id="tPrice">
-                            <span id="totalPrice"><a>$</a> <?php echo htmlspecialchars($game_price); ?></span>
+                            <span id="totalPrice"><a>$</a> <?php echo htmlspecialchars($game_price, ENT_QUOTES, 'UTF-8'); ?></span>
                         </p>
 
                     </div>
@@ -144,9 +144,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
                 <div class="product_img">
                     <?php foreach ($item_imgs as $i => $img): ?>
                         <div class="item">
-                            <h3><?php echo htmlspecialchars($item_names[$i]); ?></h3>
-                            <img src="upload/<?php echo htmlspecialchars($img); ?>" alt="<?php echo htmlspecialchars($img); ?>">
-                            <p><?php echo number_format($probabilities[$i] * 100, 2) . '%'; ?></p>
+                            <h3><?php echo htmlspecialchars($item_names[$i], ENT_QUOTES, 'UTF-8'); ?></h3>
+                            <img src="upload/<?php echo htmlspecialchars($img, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($img, ENT_QUOTES, 'UTF-8'); ?>">
+                            <p><?php echo htmlspecialchars(number_format($probabilities[$i] * 100, 2), ENT_QUOTES, 'UTF-8') . '%'; ?></p>
             </div>
         <?php endforeach ?>
     </div>
@@ -156,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
 
         </div>
     </div>
-        <div class="winner" id="winnerpage" data-show-popup="<?php echo !empty($_SESSION['rolledItem']) ? 'true' : 'false'; ?>">
+        <div class="winner" id="winnerpage" data-show-popup="<?php echo !empty($_SESSION['rolledItem'], ENT_QUOTES, 'UTF-8') ? 'true' : 'false'; ?>">
             <button class="close-btn" onclick="closePopup()">✖</button>
             <?php if (!empty($_SESSION['rolledItem'])): ?>
                 <h2>Congrats You Won</h2>
@@ -164,8 +164,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
                     <?php foreach ($_SESSION['rolledItem'] as $prizes): ?>
                         <?php foreach ($prizes as $prize) : ?>
                         <div class="winner-item">
-                            <img src="upload/<?php echo htmlspecialchars($prize['item_img']); ?>" alt="Item image">
-                            <h3><?php echo htmlspecialchars($prize['item_name']); ?></h3>
+                            <img src="upload/<?php echo htmlspecialchars($prize['item_img'], ENT_QUOTES, 'UTF-8'); ?>" alt="Item image">
+                            <h3><?php echo htmlspecialchars($prize['item_name'], ENT_QUOTES, 'UTF-8'); ?></h3>
                         </div>  
                         <?php endforeach; ?>
                     <?php endforeach; ?>
@@ -179,7 +179,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
     <div id="myModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <p><?php echo addslashes($_SESSION['error']); ?></p>
+            <p><?php echo htmlspecialchars($_SESSION['error'], ENT_QUOTES, 'UTF-8'); ?></p>
         </div>
     </div>
     <?php endif; ?>
