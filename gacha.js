@@ -16,11 +16,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
     let quantity = parseInt(quantityInput.value);
 
     function updateTotalPrice() {
-        if(totalPriceElement){
-        const totalPrice = quantity * priceValue;
-        totalPriceElement.textContent = totalPrice;
+        if (totalPriceElement) {
+            const totalPrice = quantity * priceValue;
+            totalPriceElement.textContent = '$ ' + totalPrice;
         }
     }
+    
 
     incrementButton.addEventListener('click', (event) => {
         event.preventDefault();

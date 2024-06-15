@@ -15,7 +15,8 @@ html, body {
 }
 
 body {
-    overflow-y: auto; /* Ensure vertical scrolling */
+    overflow-y: auto;
+   
 }
 
 .listings {
@@ -41,6 +42,7 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 0 1%;
+    z-index: -1;
 }
 
 .menu_bar ul {

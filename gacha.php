@@ -30,8 +30,8 @@ if($game_id_from_url !== null){
             $game_username = $row['username'];
             $game_img = $row['game_img'];
             $item_id = $row['item_id'];
-            $item_name = $row['item_name'];
-            $item_img[] = $row['item_img'];
+            $item_names[] = $row['item_name']; 
+            $item_imgs[] = $row['item_img'];
             $probabilities[] = $row['probability'];
             $stock_sum += $row['item_stock'];
             $seller_id = $row['user_id'];
@@ -155,49 +155,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
                 <p class="price">Price: <span class="priceValue"><?php echo htmlspecialchars($game_price); ?></span>$</p>
                 <div class="btn">
                     <form action="gacha.php?id=<?php echo urlencode($game_id); ?>" method="post">
-                        <button class="btn1 btn-decrement">-</button>
-                        <input type="text" id="quantity" class="btn-input" name="quantity" value="1">
-                        <button class="btn1 btn-increment">+</button>
+                        <div class="btn-group">
+                            <button class="btn1 btn-decrement">-</button>
+                            <input type="text" id="quantity" class="btn-input" name="quantity" value="1">
+                            <button class="btn1 btn-increment">+</button>
+                        </div>
                         <input type="hidden" name="game_id" value="<?php echo htmlspecialchars($game_id); ?>">
+                        <div class="total-amount">
+                        
+                        <p class="total-price" id="tPrice">
+                            <span id="totalPrice"><a>$</a> <?php echo htmlspecialchars($game_price); ?></span>
+                        </p>
+
+                    </div>
                         <div class="purchase">
-                            <button id="purchase" name="roll" onclick="showWinnerForm()">Buy</button>
+                            <button id="purchase" name="roll" onclick="showWinnerForm()"><a>BUY</a></button>
                         </div>
                     </form>
-                    <div class="total-amount">
-                        <h1>Total Amount</h1>
-                        <p class="total-price" id="tPrice">
-                            <span id="totalPrice"> <?php echo htmlspecialchars($game_price); ?></span>
-                        </p>
-                    </div>
+                   
                 </div>
             </div>
             <div class="product_img-container">
                 <div class="product_img">
-                    <?php foreach ($item_img as $i => $img): ?>
-                    <img src="upload/<?php echo htmlspecialchars($img); ?>" alt="<?php echo htmlspecialchars($img); ?>">
-                    <p><?php echo number_format($probabilities[$i] * 100, 2) . '%'; ?></p>
-                    <span><?php echo htmlspecialchars($item_name); ?></span>
-                    <?php endforeach ?>
-                </div>
+                    <?php foreach ($item_imgs as $i => $img): ?>
+                        <div class="item">
+                            <h3><?php echo htmlspecialchars($item_names[$i]); ?></h3>
+                            <img src="upload/<?php echo htmlspecialchars($img); ?>" alt="<?php echo htmlspecialchars($img); ?>">
+                            <p><?php echo number_format($probabilities[$i] * 100, 2) . '%'; ?></p>
             </div>
+        <?php endforeach ?>
+    </div>
+ 
+</div>
+
+
         </div>
     </div>
-    <div class="winner" id="winnerpage" data-show-popup="<?php echo !empty($_SESSION['rolledItem']) ? 'true' : 'false'; ?>">
-        <button class="close-btn" onclick="closePopup()">✖</button>
-        <?php if (!empty($_SESSION['rolledItem'])): ?>
-            <h2>Congrats You Won</h2>
-            <div class="winner-items">
-                <?php foreach ($_SESSION['rolledItem'] as $prizes): ?>
-                    <?php foreach ($prizes as $prize) : ?>
-                    <div class="winner-item">
-                        <img src="upload/<?php echo htmlspecialchars($prize['item_img']); ?>" alt="Item image">
-                        <p><?php echo htmlspecialchars($prize['item_name']); ?></p>
-                    </div>  
+        <div class="winner" id="winnerpage" data-show-popup="<?php echo !empty($_SESSION['rolledItem']) ? 'true' : 'false'; ?>">
+            <button class="close-btn" onclick="closePopup()">✖</button>
+            <?php if (!empty($_SESSION['rolledItem'])): ?>
+                <h2>Congrats You Won</h2>
+                <div class="winner-items">
+                    <?php foreach ($_SESSION['rolledItem'] as $prizes): ?>
+                        <?php foreach ($prizes as $prize) : ?>
+                        <div class="winner-item">
+                            <img src="upload/<?php echo htmlspecialchars($prize['item_img']); ?>" alt="Item image">
+                            <h3><?php echo htmlspecialchars($prize['item_name']); ?></h3>
+                        </div>  
+                        <?php endforeach; ?>
                     <?php endforeach; ?>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-    </div>
+                </div>
+            <?php endif; ?>
+        </div>
 
     <canvas id="confettiCanvas" class="confetti-canvas"></canvas>
   

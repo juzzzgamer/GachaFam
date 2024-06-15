@@ -78,8 +78,20 @@ $user = $stmt->fetch();
     <meta charset="UTF-8">
     <title>Edit Profile</title>
     <link rel="stylesheet" href="profiles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div class="menu_bar">
+        <a href="index.php" class="logo"><h3>Gacha<span>Fam.</span></h3></a>
+        <ul>
+        <li>Your credits: <?php echo htmlspecialchars($_SESSION['user_credits'] ); ?></li>
+            <li><a href="profile.php" id="profile">Welcome, <span style="color:red"><?php echo htmlspecialchars($username); ?></span></a></li>
+            <li><a href="credit.php">Add Credit</a></li>
+            <li><a href="create.php">Create game</a></li>
+            <li><a href="prize.php">History</a></li>
+            <li><a href="logout.php">Logout</a></li>
+        </ul>
+    </div>
     <?php if ($error): ?>
         <p style="color: red;"><?= $error ?></p>
     <?php endif; ?>

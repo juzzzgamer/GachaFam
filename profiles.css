@@ -14,7 +14,7 @@ body, h2, p, form, input, a {
 /* Basic styles for body */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
+    
     color: #333;
     line-height: 1.6;
     margin: 0;
@@ -24,7 +24,7 @@ body {
 /* Container for the profile forms */
 #editProfile, #changePassword {
     position: relative; /* Add this line */
-    background: #fff;
+    
     padding: 20px;
     margin: 50px auto;
     width: 400px;
