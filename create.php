@@ -2,6 +2,7 @@
 <?php 
 include("session.php"); 
 include ("dbh.inc.php");
+include ("alert.php");
 try {
     $stmt = $pdo->prepare("SELECT id, user_id, name, img, stock FROM items WHERE user_id = :user_id");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
@@ -11,26 +12,7 @@ try {
     die("Query failed: " . $e->getMessage());
 }
 
-if (isset($_SESSION['success_message'])) {
-    $success_message = $_SESSION['success_message'];
-    echo "<script>
-            document.addEventListener('DOMContentLoaded', function() {
-                swal('Success', '{$success_message}', 'success');
-            });
-          </script>";
-    unset($_SESSION['success_message']);
-}
 
-
-if (isset($_SESSION['error_message'])) {
-    $error_message = $_SESSION['error_message'];
-    echo "<script>
-            document.addEventListener('DOMContentLoaded', function() {
-                swal('Error', '{$error_message}', 'error');
-            });
-          </script>";
-    unset($_SESSION['error_message']);
-}
 ?>
 <!DOCTYPE html>
     <html lang="en">    
@@ -74,7 +56,7 @@ if (isset($_SESSION['error_message'])) {
         </script>
     </head>
     <body>
-     <script>("Hello world!");</script>
+    
         <div class="menu_bar">
             <a href="index.php" class="logo"><h3>Gacha<span>Fam.</span></h3></a>
             <ul>
