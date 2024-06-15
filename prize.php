@@ -40,7 +40,7 @@ try {
     <title>Gacha</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="prize.css">
-      <link rel="stylesheet" href="profiles.css">
+
     <script>
         function toggleView(view) {
             document.getElementById('buyer').style.display = view === 'buyer' ? 'block' : 'none';
@@ -56,8 +56,8 @@ try {
         <div class="menu_bar">
             <a href="index.php" class="logo"><h3>Gacha<span>Fam.</span></h3></a>
             <ul>
-            <li>Your credits: <?php echo htmlspecialchars($_SESSION['user_credits'] ); ?></li>
                 <li><a href="profile.php" id="profile">Welcome, <span style="color:red"><?php echo htmlspecialchars($username); ?></span></a></li>
+                  <li class="credits-display">&#128178 <span class="credits-amount"><?php echo htmlspecialchars($_SESSION['user_credits'] ); ?></span></li>
                 <li><a href="credit.php">Add Credit</a></li>
                 <li><a href="create.php">Create game</a></li>
                 <li><a href="prize.php">History</a></li>
