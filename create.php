@@ -67,8 +67,8 @@ try {
     <div class="menu_bar">
         <a href="index.php" class="logo"><h3>Gacha<span>Fam.</span></h3></a>
         <ul>
-        <li><a href="profile.php" id="profile">Welcome, <span style="color:red"><?php echo htmlspecialchars($username); ?></span></a></li>
-            <li class="credits-display">&#128178 <span class="credits-amount"><?php echo htmlspecialchars($_SESSION['user_credits']); ?></span></li>
+            <li><a href="profile.php" id="profile">Welcome, <span style="color:red"><?php echo htmlspecialchars($username, ENT_QUOTES, 'UTF-8'); ?></span></a></li>
+            <li class="credits-display">&#128178 <span class="credits-amount"><?php echo htmlspecialchars($_SESSION['user_credits'], ENT_QUOTES, 'UTF-8'); ?></span></li>
             <li><a href="credit.php">Add Credit</a></li>
             <li><a href="create.php">Create game</a></li>
             <li><a href="prize.php">History</a></li>
@@ -110,9 +110,9 @@ try {
                             <?php foreach ($items as $item): ?>
                             <?php if($item['stock'] != 0): ?>
                                 <div class="item-detail">
-                                    <img src="upload/<?php echo htmlspecialchars($item['img']); ?>" alt="Item image">
-                                    <h2><?php echo htmlspecialchars($item['name']); ?></h2>
-                                    <p>Stock: <?php echo htmlspecialchars($item['stock']); ?></p>
+                                    <img src="upload/<?php echo htmlspecialchars($item['img'], ENT_QUOTES, 'UTF-8'); ?>" alt="Item image">
+                                    <h2><?php echo htmlspecialchars($item['name'], ENT_QUOTES, 'UTF-8'); ?></h2>
+                                    <p>Stock: <?php echo htmlspecialchars($item['stock'], ENT_QUOTES, 'UTF-8'); ?></p>
                                     <div class="checkbox-container">
                                         <input type="checkbox" id="item_<?php echo htmlspecialchars($item['id']); ?>" name="selectedItem[]" value="<?php echo htmlspecialchars($item['id']); ?>">
                                         <label for="item_<?php echo htmlspecialchars($item['id']); ?>"></label>
@@ -133,8 +133,8 @@ try {
                         <?php foreach ($items as $item): ?>
                             <?php if($item['stock'] == 0): ?>
                                 <div class="item-detail">
-                                    <img src="upload/<?php echo htmlspecialchars($item['img']); ?>" alt="Item image">
-                                    <h2><?php echo htmlspecialchars($item['name']); ?></h2>
+                                    <img src="upload/<?php echo htmlspecialchars($item['img'], ENT_QUOTES, 'UTF-8'); ?>" alt="Item image">
+                                    <h2><?php echo htmlspecialchars($item['name'], ENT_QUOTES, 'UTF-8'); ?></h2>
                                 </div>
                             <?php endif; ?>
                         <?php endforeach; ?>
@@ -163,7 +163,7 @@ try {
                             <select id="item_id_update" name="id" >
                                 <?php 
                                 foreach ($items as $item) {
-                                    echo "<option value=\"{$item['id']}\">{$item['name']}</option>";
+                                    echo "<option value=\"{$item['id']}\">" . htmlspecialchars($item['name'], ENT_QUOTES, 'UTF-8') . "</option>";
                                 }
                                 ?>
                             </select>
@@ -182,9 +182,9 @@ try {
                         <div class="item-row">
                             <?php foreach ($items as $item): ?>
                             <div class="item-detail">
-                                <h3><?php echo htmlspecialchars($item['name']); ?></h3>
-                                <img src="upload/<?php echo htmlspecialchars($item['img']); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>">
-                                <p>Stock: <?php echo htmlspecialchars($item['stock']); ?></p>
+                                <h3><?php echo htmlspecialchars($item['name'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                                <img src="upload/<?php echo htmlspecialchars($item['img'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($item['name'], ENT_QUOTES, 'UTF-8'); ?>">
+                                <p>Stock: <?php echo htmlspecialchars($item['stock'], ENT_QUOTES, 'UTF-8'); ?></p>
                             </div>
                             <?php endforeach; ?>
                         </div>
