@@ -43,8 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['amount'])) {
             <h3>Gacha<span>Fam.</span></h3>
         </a>
         <ul>
-            
-        <li><a href="profile.php" id="profile">Welcome, <span style="color:red"><?php echo htmlspecialchars($username); ?></span></a></li>
+            <li><a href="profile.php" id="profile">Welcome, <span style="color:red"><?php echo htmlspecialchars($username, ENT_QUOTES, 'UTF-8'); ?></span></a></li>
             <li><a href="credit.php">Add Credit</a></li>
             <li><a href="create.php">Create game</a></li>
             <li><a href="prize.php">History</a></li>
@@ -68,10 +67,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['amount'])) {
     <script>
         // Display success or error messages using SweetAlert
         <?php if (isset($_SESSION['success_message'])): ?>
-            swal("Success", "<?php echo $_SESSION['success_message']; ?>", "success");
+            swal("Success", "<?php echo htmlspecialchars($_SESSION['success_message'], ENT_QUOTES, 'UTF-8'); ?>", "success");
             <?php unset($_SESSION['success_message']); ?>
         <?php elseif (isset($_SESSION['error_message'])): ?>
-            swal("Error", "<?php echo $_SESSION['error_message']; ?>", "error");
+            swal("Error", "<?php echo htmlspecialchars($_SESSION['error_message'], ENT_QUOTES, 'UTF-8'); ?>", "error");
             <?php unset($_SESSION['error_message']); ?>
         <?php endif; ?>
     </script>
