@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['amount'])) {
         </a>
         <ul>
             
-            <li><a href="#" id="profile">Welcome, <span style="color:red"><?php echo htmlspecialchars($username, ENT_QUOTES, 'UTF-8'); ?></span></a></li>
+        <li><a href="profile.php" id="profile">Welcome, <span style="color:red"><?php echo htmlspecialchars($username); ?></span></a></li>
             <li><a href="credit.php">Add Credit</a></li>
             <li><a href="create.php">Create game</a></li>
             <li><a href="prize.php">History</a></li>
