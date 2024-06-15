@@ -8,7 +8,8 @@ function increaseStock($pdo, $item_id, $quantity) {
         $stmt->execute();
 
         if ($stmt->rowCount() > 0) {
-            echo "<script>alert('Stock updated successfully.'); window.location.href = 'create.php';</script>";
+            $_SESSION['success_message'] = "Game created. Items successfully added to the game.";
+            header("Location: create.php");
         } else {
             echo "<script>alert('No rows were affected.'); window.location.href = 'create.php';</script>";
         }
@@ -16,26 +17,22 @@ function increaseStock($pdo, $item_id, $quantity) {
         echo "Connection failed: " . $e->getMessage();
     }
 }
+
 function deductStock($pdo, $item_id, $quantity) {
-    try {
+    try {   
         $sql = "UPDATE items SET stock = stock - :quantity WHERE id = :id";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':id', $item_id, PDO::PARAM_INT);
         $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);   
         $stmt->execute();
 
-        if ($stmt->rowCount() > 0) {
-            echo "Stock updated successfully for item ID : $item_id." . "<br>";
-        } else {
-            $errorInfo = $stmt->errorInfo();
-            echo "Failed to update stock for item ID: $item_id. Error: " . $errorInfo[2] . "<br>";
-        }
+        // No alerts for stock deduction
     } catch (PDOException $e) {
         echo "Connection failed: " . $e->getMessage();
     }
 }
 
-function getCurrentStock($pdo, $item_id){
+function getCurrentStock($pdo, $item_id) {
     try {
         $stmt = $pdo->prepare("SELECT stock FROM items WHERE id = :item_id");
         $stmt->bindParam(':item_id', $item_id);
@@ -43,7 +40,7 @@ function getCurrentStock($pdo, $item_id){
         $updated_stock = $stmt->fetchColumn();
 
         return $updated_stock;
-    }catch (PDOException $e) {
+    } catch (PDOException $e) {
         echo "Connection failed: " . $e->getMessage();
     }
 }

@@ -2,6 +2,7 @@
 include("dbh.inc.php");
 include("session.php");
 include("updateCredit.php");
+include("alert.php");
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['amount'])) {
     $amount = (int)$_POST['amount'];
 
@@ -11,20 +12,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['amount'])) {
     
         if ($updatedUser) {
             $_SESSION['user_credits'] = $updatedUser['credits'];
-            $_SESSION['message'] = "Credits updated successfully!";
+            $_SESSION['success_message'] = "Credits updated successfully!";
         } else {
-            $_SESSION['message'] = "Error fetching updated credits.";
+            $_SESSION['error_message'] = "Error fetching updated credits.";
             }
         } else {
-            $_SESSION['message'] = "Error updating record.";
+            $_SESSION['error_message'] = "Error updating record.";
         }
         header('Location: credit.php');
         exit();
 }
-if (isset($_SESSION['message'])) {
-    echo $_SESSION['message'];
-    unset($_SESSION['message']);
-}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,6 +31,7 @@ if (isset($_SESSION['message'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Credits</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
     <div class="menu_bar">
