@@ -7,13 +7,11 @@
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  background: var(--color-black-1);
   box-sizing: border-box;
   font-family: Arial, Helvetica, sans-serif;
   color: var(--color-white);
-  background-image: url("index_bg.jpg");
+  background: url("index_bg.jpg") no-repeat center center fixed;
+  background-size: cover; 
 
 }
 
