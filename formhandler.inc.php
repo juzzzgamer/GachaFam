@@ -13,7 +13,7 @@ function handleFileUpload($file, $pathPrefix = 'upload/') {
         throw new Exception('Unknown error occurred during file upload.');
     }
 
-    if ($img_size > 125000000) {
+    if ($img_size > 5242880) {
         throw new Exception('Sorry, your file is too large.');
     }
 
