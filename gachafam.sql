@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Jun 01, 2024 at 08:47 AM
+-- Generation Time: Jun 15, 2024 at 07:01 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -37,15 +37,6 @@ CREATE TABLE `game` (
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `game`
---
-
-INSERT INTO `game` (`id`, `user_id`, `game_name`, `game_desc`, `img`, `price`, `created_at`) VALUES
-(1, 1, 'test', 'test', 'IMG-664aa5220a23b0.00334221.jpg', 123, '2024-05-20 09:19:30'),
-(2, 1, 'test2', 'test222', 'IMG-664acd9d7fb2a2.79932915.jpg', 123, '2024-05-20 12:12:13'),
-(3, 1, 'test', 'test', 'IMG-664b0ae12cb3d1.15010301.png', 1, '2024-05-20 16:33:37');
-
 -- --------------------------------------------------------
 
 --
@@ -59,14 +50,6 @@ CREATE TABLE `game_items` (
   `probability` decimal(3,3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `game_items`
---
-
-INSERT INTO `game_items` (`id`, `item_id`, `game_id`, `probability`) VALUES
-(1, 1, 1, 0.100),
-(2, 4, 1, 0.900);
-
 -- --------------------------------------------------------
 
 --
@@ -78,27 +61,8 @@ CREATE TABLE `items` (
   `user_id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `img` text NOT NULL,
-  `stock` int(11) NOT NULL
+  `stock` int(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `items`
---
-
-INSERT INTO `items` (`id`, `user_id`, `name`, `img`, `stock`) VALUES
-(1, 1, 'Uncommon Item', '', 7),
-(2, 1, 'Medium Item 1', '', 0),
-(3, 1, 'Medium Item 2', '', 0),
-(4, 1, 'Common Item 1', '', 0),
-(5, 1, 'Common Item 2', '', 0),
-(6, 1, 'Common Item 3', '', 0),
-(7, 1, 'Common Item 4', '', 0),
-(8, 1, 'Common Item 5', '', 0),
-(9, 5, 'Common Item 6', '', 5),
-(10, 1, 'test', 'Array', 0),
-(11, 1, 'test2', 'Array', 0),
-(12, 1, 'test222', 'IMG-665aa2d06a2e92.44813581.png', 1),
-(13, 1, '2', 'IMG-665aaa6fa01c68.36742331.png', 0);
 
 -- --------------------------------------------------------
 
@@ -110,17 +74,9 @@ CREATE TABLE `user` (
   `id` int(10) NOT NULL,
   `email` varchar(50) NOT NULL,
   `username` varchar(50) NOT NULL,
-  `password` varchar(50) NOT NULL
+  `password` varchar(50) NOT NULL,
+  `credits` int(11) UNSIGNED NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`id`, `email`, `username`, `password`) VALUES
-(1, 'test', 'test', '098f6bcd4621d373cade4e832627b4f6'),
-(5, 'test1', 'test1', '5a105e8b9d40e1329780d62ea2265d8a'),
-(6, 'test2', 'test2', 'ad0234829205b9033196ba818f7a872b');
 
 --
 -- Indexes for dumped tables
@@ -162,25 +118,25 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `game`
 --
 ALTER TABLE `game`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `game_items`
 --
 ALTER TABLE `game_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables

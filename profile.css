@@ -1,0 +1,107 @@
+/* profiles.css */
+
+/* Reset some basic elements */
+body, h2, p, form, input, a {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+/* Basic styles for body */
+body {
+    color: white;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container for the profile forms */
+#editProfile, #changePassword {
+    position: relative; /* Add this line */
+    
+    padding: 20px;
+    margin: 50px auto;
+    width: 400px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.back-button {
+    position: absolute; /* Change positioning to absolute */
+    top: 10px; /* Adjust top as needed */
+    left: 5px; /* Adjust right as needed */
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 18px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 1.8em;
+    text-align: center;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #ddd;
+    font-weight: bold;
+}
+
+input[type="email"], input[type="password"] {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 1em;
+}
+
+input[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    border: 1px solid #28a745;
+    border-radius: 3px;
+    color: #fff;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #218838;
+}
+
+a {
+    display: block;
+    text-align: center;
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #0056b3;
+}
+
+p {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+p[style*="color: red"] {
+    color: red;
+}
+
+p[style*="color: green"] {
+    color: green;
+}
