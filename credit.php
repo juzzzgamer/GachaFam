@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['amount'])) {
     $amount = (int)$_POST['amount'];
 
     if (updateUserCredits($pdo, $user_id, $amount)) {
-        // Fetch updated credits
+
         $updatedUser = fetchUserCredits($pdo, $user_id);
 
         if ($updatedUser) {
@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['amount'])) {
     </div>
 
     <script>
-        // Display success or error messages using SweetAlert
+      
         <?php if (isset($_SESSION['success_message'])): ?>
             swal("Success", "<?php echo htmlspecialchars($_SESSION['success_message'], ENT_QUOTES, 'UTF-8'); ?>", "success");
             <?php unset($_SESSION['success_message']); ?>

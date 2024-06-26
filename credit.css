@@ -6,7 +6,7 @@
     --color-input-focus: lightgreen;
     --color-input-text: lightgreen;
     --color-background: #5f5f5f;
-    --color-green: #4caf50; /* New green color */
+    --color-green: #4caf50; 
 }
 
 body {
@@ -155,7 +155,7 @@ body {
 }
 
 .money {
-    color: var(--color-green); /* Change money color to green */
+    color: var(--color-green); 
     margin-bottom: 10px;
     animation: slideInLeft 0.5s ease;
 }

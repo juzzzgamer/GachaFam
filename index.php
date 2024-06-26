@@ -1,7 +1,7 @@
 <?php
 include("dbh.inc.php");
 include("session.php");
-
+//https://youtu.be/0YLJ0uO6n8I?si=33G8Srdg_YMQTOJp
 try {
     $stmt = $pdo->prepare("SELECT game.id, game.game_name, game.game_desc, game.img, game.price, user.credits 
         FROM game
@@ -46,7 +46,7 @@ try {
             <li><a href="logout.php">Logout</a></li>
         </ul>
     </div>
-    
+
     <section class="SPECIAL">
         <h2>GAMES</h2>
         <div class="box-container">
@@ -58,7 +58,7 @@ try {
                 <h3><?php echo htmlspecialchars($game['game_name'], ENT_QUOTES, 'UTF-8'); ?></h3>
                 <p><?php echo htmlspecialchars($game['price'], ENT_QUOTES, 'UTF-8'); ?>$</p>
                 <p><?php echo htmlspecialchars($game['game_desc'], ENT_QUOTES, 'UTF-8'); ?></p>
-                
+           
             </div>
             <?php endif; ?>
             <?php endforeach; ?>
