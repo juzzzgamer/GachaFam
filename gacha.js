@@ -64,6 +64,7 @@ document.addEventListener("DOMContentLoaded", function() {
             winnerPopup.classList.add("show");
 
             // Confetti animation
+            //https://youtu.be/hq_tKbSzAiY?si=vkQRdyVK5YTtttQK
             let canvas = document.createElement("canvas");
             document.body.appendChild(canvas);
 
@@ -112,30 +113,3 @@ function closePopup() {
     xhr.send();
 }
 
-/*var modal = document.getElementById("myModal");
-var span = document.getElementsByClassName("close")[0];
-modal.style.display = "block";
-span.onclick = function() {
-    modal.style.display = "none";
-    unsetSessionVariable(); 
-};
-
-function unsetSessionVariable() {
-    var xhrUnset = new XMLHttpRequest();
-    xhrUnset.open("POST", "unset_session.php", true);
-    xhrUnset.onload = function() {
-        if (xhrUnset.status === 200) {
-            console.log("Session variable unset successfully");
-        } else {
-            console.error("Failed to unset session variable");
-        }
-    };
-    xhrUnset.send();
-}
-
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-        unsetSessionVariable(); 
-    }
-}*/

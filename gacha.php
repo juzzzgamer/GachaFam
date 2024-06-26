@@ -174,7 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll'])) {
         </div>
 
     <canvas id="confettiCanvas" class="confetti-canvas"></canvas>
-  
+    
     <?php if (isset($_SESSION['error'])): ?>
     <div id="myModal" class="modal">
         <div class="modal-content">

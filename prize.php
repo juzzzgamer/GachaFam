@@ -14,7 +14,7 @@ try {
     $stmt->execute();
     $itemsWon = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Fetch items sold by the user
+   
     $stmt = $pdo->prepare(
         "SELECT winner.username as winner_name, owner.username as owner_name, user_items.item_id as item_id, items.name as item_name, items.img as item_img
         FROM user_items

@@ -2,6 +2,7 @@
 require_once "dbh.inc.php"; 
 include "session.php";
 include "stock_update.php";
+//https://youtu.be/IagGGcC95Ig?si=5E2NgRNd_0kssJj-
 
 function handleFileUpload($file, $pathPrefix = 'upload/') {
     $img_name = $file["name"];
